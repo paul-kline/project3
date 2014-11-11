@@ -1,6 +1,6 @@
-// project2.c++: Starter for EECS 672 Project 2
+// project3.c++: Starter for EECS 672 Project 2
 
-#include "GLFWController.h"
+#include "MyController.h"
 #include "Simpleshape.h"
 #include "Column.h"
 #include "Block.h"
@@ -75,6 +75,7 @@ void set3DViewingInformation(double xyz[6])
 	ModelView::setProjection(PERSPECTIVE);
 	ModelView::setProjectionPlaneZ(zpp);
 	ModelView::setECZminZmax(zmin, zmax);
+	ModelViewWithLighting::setViewingRadius(viewingRadius);
 
 }
 
@@ -86,7 +87,7 @@ int main(int argc, char* argv[])
 //   test = -test;
 //   std::cout << "after negation: " << test.dx << ", " << test.dy << ", " << test.dz;
 	ModelViewWithLighting::setShaderSources("vsh.c++", "fsh.c++");
-	GLFWController c("Solomon's Temple", MVC_USE_DEPTH_BIT);
+	MyController c("Solomon's Temple", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);
 	ModelViewWithLighting::setShaderSources("vsh.c++", "fsh.c++");
 	// create your scene, adding things to the Controller....

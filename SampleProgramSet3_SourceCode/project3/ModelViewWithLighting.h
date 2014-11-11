@@ -22,6 +22,8 @@ public:
 
 	static void setShaderSources(const std::string& vShader, const std::string& fShader);
 
+	static void setViewingRadius(float viewingRadius_);
+	static float viewingRadius;
 protected:
 
 	static ShaderIF* shaderIF;
@@ -32,6 +34,9 @@ protected:
 	static GLint ppuLoc_mc_ec, ppuLoc_ec_lds;
 
 	static void fetchGLSLVariableLocations();
+	
+	
+	
 
 private:
 	static std::string vShaderSource, fShaderSource;

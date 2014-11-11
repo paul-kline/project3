@@ -1,7 +1,7 @@
 // Your implementation of ModelView::getMatrices
 
-#include "ModelView.h"
-
+//#include "ModelView.h"
+#include "ModelViewWithLighting.h"
 void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 {
 	// TODO:
@@ -52,8 +52,28 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 		ymin = ymid - 0.5*wHeight;
 		ymax = ymid + 0.5*wHeight;
 	}
-	ec_lds = cryph::Matrix4x4::perspective( zpp,  -(xmax - xmin)/2, (xmax-xmin)/2,
-		-(ymax-ymin)/2,  (ymax-ymin)/2,  ecZmin,  ecZmax);
+	
+	switch (ModelView::projType){
+	  
+	//  float ecYmax,ecYmin,ecXmax,ecXmin=0;
+	 // float Ycenter,Xcenter,Zcenter=0;
+	  
+	  case PERSPECTIVE:
+	    ec_lds = cryph::Matrix4x4::perspective( zpp,  -ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius,
+		      -ModelViewWithLighting::viewingRadius,  ModelViewWithLighting::viewingRadius,  ecZmin,  ecZmax);
+	     // ec_lds = cryph::Matrix4x4::perspective( zpp,  -(xmax - xmin)/2, (xmax-xmin)/2,
+		//      -(ymax-ymin)/2,  (ymax-ymin)/2,  ecZmin,  ecZmax);
+	      break;
+	  case OBLIQUE:
+	    
+	    break;
+	    
+	  case ORTHOGONAL:
+	    
+	    break;
+	      
+	}
+	      
 	//ec_lds = cryph::Matrix4x4::orthogonal(xmin,xmax,ymin,ymax,ecZmin, ecZmax);
 	//    cryph::Matrix4x4 cryph::Matrix4x4::lookAt(
 	//          const cryph::AffPoint& eye, const cryph::AffPoint& center,

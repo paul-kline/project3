@@ -6,13 +6,13 @@ LINK = g++ -fPIC -g
 LOCAL_UTIL_LIBRARIES = -L../lib -lcryph -lfont -lglsl -lmvc
 OGL_LIBRARIES = -lglfw -lGLU -lGL
 
-OBJS = project2.o Simpleshape.o getMatrices.o ModelViewWithLighting.o Column.o Block.o Stairs.o HalfColumn.o FancyColumn.o SuperFancyColumn.o FirePit.o
+OBJS = project3.o Simpleshape.o getMatrices.o ModelViewWithLighting.o MyController.o Column.o Block.o Stairs.o HalfColumn.o FancyColumn.o SuperFancyColumn.o FirePit.o
 all:
 	$(MAKE) -C ../mvcutil
-	$(MAKE) project2
+	$(MAKE) project3
 
-project2: $(OBJS) ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/libmvc.so
-	$(LINK) -o project2 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
+project3: $(OBJS) ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/libmvc.so
+	$(LINK) -o project3 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
 
 ../lib/libcryph.so: ../cryphutil/AffVector.h ../cryphutil/AffVector.c++ ../cryphutil/AffPoint.h ../cryphutil/AffPoint.c++
 	(cd ../cryphutil; make)
@@ -26,12 +26,14 @@ project2: $(OBJS) ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/
 ../lib/libmvc.so: ../mvcutil/Controller.h ../mvcutil/Controller.c++ ../mvcutil/ModelView.h ../mvcutil/ModelView.c++
 	(cd ../mvcutil; make)
 
-project2.o: project2.c++
-	$(CPP) $(C_FLAGS) project2.c++
+project3.o: project3.c++
+	$(CPP) $(C_FLAGS) project3.c++
 getMatrices.o: getMatrices.c++
 	$(CPP) $(C_FLAGS) getMatrices.c++
 ModelViewWithLighting.o: ModelViewWithLighting.h ModelViewWithLighting.c++
 	$(CPP) $(C_FLAGS) ModelViewWithLighting.c++
+MyController.o: MyController.h MyController.c++
+	$(CPP) $(C_FLAGS) MyController.c++
 Column.o: Column.h Column.c++
 	$(CPP) $(C_FLAGS) Column.c++
 HalfColumn.o: HalfColumn.h HalfColumn.c++
