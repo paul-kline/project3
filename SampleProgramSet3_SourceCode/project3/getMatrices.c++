@@ -65,11 +65,13 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 		//      -(ymax-ymin)/2,  (ymax-ymin)/2,  ecZmin,  ecZmax);
 	      break;
 	  case OBLIQUE:
-	    
+	    ec_lds = cryph::Matrix4x4::orthogonal(-ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius,
+		-ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius, ecZmin, ecZmax);
 	    break;
-	    
 	  case ORTHOGONAL:
-	    
+	    cryph::AffVector dir(-1,0,-1);
+	    ec_lds = cryph::Matrix4x4::oblique(-4*ModelViewWithLighting::viewingRadius, -ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius,
+		-ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius, ecZmin, ecZmax, dir);
 	    break;
 	      
 	}

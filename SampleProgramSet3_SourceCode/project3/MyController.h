@@ -17,6 +17,11 @@ public:
 	void handleMouseButton(MouseButton button, bool pressed, int x, int y, int mods);
 	void handleMouseMotion(int x, int y);
 	void handleScroll(bool up);
+	
+	void handleAsciiChar(unsigned char theChar, int x, int y);
+	void handleFunctionKey(int whichFunctionKey, int x, int y, int mods);
+	void handleSpecialKey(SpecialKey key, int x, int y, int mods);
+	
 protected:
 	
 
