@@ -75,6 +75,8 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	    break;
 	      
 	}
+
+	ec_lds = cryph::Matrix4x4::scale(dynamic_zoomScale,dynamic_zoomScale,dynamic_zoomScale) * ec_lds;
 	      
 	//ec_lds = cryph::Matrix4x4::orthogonal(xmin,xmax,ymin,ymax,ecZmin, ecZmax);
 	//    cryph::Matrix4x4 cryph::Matrix4x4::lookAt(

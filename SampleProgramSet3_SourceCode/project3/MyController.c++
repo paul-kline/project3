@@ -24,7 +24,11 @@ void MyController::handleMouseMotion(int x, int y)
 }
 void MyController::handleScroll(bool up)
 {
-    Controller::handleScroll(up);
+    //Controller::handleScroll(up);
+  float value = 0.2;
+  value *= (up)? 1 : -1 ;
+  ModelView::addToGlobalZoom(value);
+  std::cout << "Adding to global zoom";
 }
 
 void MyController::handleAsciiChar(unsigned char theChar, int x, int y)
