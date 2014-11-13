@@ -26,6 +26,10 @@ protected:
 	
 
 private:
+	static int clickedx;
+	static int clickedy;
+	static bool leftclick_down;
+	
 	
 };
 

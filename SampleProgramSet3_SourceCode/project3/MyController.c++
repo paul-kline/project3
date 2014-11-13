@@ -5,8 +5,9 @@
 #include "MyController.h"
 #include "ModelView.h"
 
-
-
+int MyController::clickedx=0;
+int MyController::clickedy=0;
+bool MyController::leftclick_down = false;
 MyController::MyController(const std::string& windowTitle, int rcFlags) :
 	GLFWController(windowTitle,rcFlags)
 {
@@ -16,11 +17,43 @@ MyController::MyController(const std::string& windowTitle, int rcFlags) :
 
 void MyController::handleMouseButton(Controller::MouseButton button, bool pressed, int x, int y, int mods)
 {
-    Controller::handleMouseButton(button, pressed, x, y, mods);
+   // Controller::handleMouseButton(button, pressed, x, y, mods);
+  
+  
+  if(button == LEFT_BUTTON && pressed){
+    std::cout << "left button and pressed: " << x << ", " << y << "\n";
+    MyController::clickedx=x;
+    MyController::clickedy=y;
+    MyController::leftclick_down = true;
+    
+  }
+  if(button == LEFT_BUTTON && !pressed){
+    MyController::leftclick_down = false;
+  }
+  
 }
 void MyController::handleMouseMotion(int x, int y)
 {
-    Controller::handleMouseMotion(x, y);
+  if(MyController::leftclick_down){
+    float deltaX = x - clickedx;
+    float deltaY = y - clickedy;     
+    std::cout << deltaX << ", " << deltaY << "\n";
+    ModelView::addToGlobalRotationDegrees(deltaY,deltaX, 0);
+    redraw();
+    
+  }  else{
+    /*
+    clickedx = x;
+    clickedy = y; */
+  }
+    
+    //Controller::handleMouseMotion(x, y);
+	
+      
+  
+  
+  
+  
 }
 void MyController::handleScroll(bool up)
 {

@@ -14,7 +14,11 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 // 	cryph::Matrix4x4 up;
 //   
       
-  	mc_ec= cryph::Matrix4x4::lookAt(eye, center,up);
+	float d = eye[2] - center[2];
+	cryph::Matrix4x4 t = cryph::Matrix4x4::IdentityMatrix;
+	t*=d;
+	//const cryph::Matrix4x4 rot = (-1)*t * dynamic_view * (t);
+  	mc_ec=  cryph::Matrix4x4::lookAt(eye, center,up) * dynamic_view;
   
   
 	
@@ -53,30 +57,48 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 		ymax = ymid + 0.5*wHeight;
 	}
 	
-	switch (ModelView::projType){
-	  
 	//  float ecYmax,ecYmin,ecXmax,ecXmin=0;
 	 // float Ycenter,Xcenter,Zcenter=0;
 	  
+	  float ecXmin;
+	  ecXmin= -ModelViewWithLighting::viewingRadius;
+	  float ecYmin;
+	  ecYmin= -ModelViewWithLighting::viewingRadius;
+	  float ecXmax;
+	  ecXmax= ModelViewWithLighting::viewingRadius;
+	  float ecYmax;
+	  ecYmax= ModelViewWithLighting::viewingRadius;
+	  
+	  ecXmin/=dynamic_zoomScale;
+	  ecXmax/= dynamic_zoomScale;
+	  ecYmax/=dynamic_zoomScale;
+	  ecYmin/=dynamic_zoomScale;
+	  //ecZmax/=dynamic_zoomScale;
+	  //ecZmin/=dynamic_zoomScale;
+	  
+	switch (ModelView::projType){
+	  
 	  case PERSPECTIVE:
-	    ec_lds = cryph::Matrix4x4::perspective( zpp,  -ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius,
-		      -ModelViewWithLighting::viewingRadius,  ModelViewWithLighting::viewingRadius,  ecZmin,  ecZmax);
+	    ec_lds = cryph::Matrix4x4::perspective( zpp,  ecXmin, ecXmax,
+		      ecYmin,  ecYmax,  ecZmin,  ecZmax);
 	     // ec_lds = cryph::Matrix4x4::perspective( zpp,  -(xmax - xmin)/2, (xmax-xmin)/2,
 		//      -(ymax-ymin)/2,  (ymax-ymin)/2,  ecZmin,  ecZmax);
 	      break;
 	  case OBLIQUE:
-	    ec_lds = cryph::Matrix4x4::orthogonal(-ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius,
-		-ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius, ecZmin, ecZmax);
+	    ec_lds = cryph::Matrix4x4::orthogonal( ecXmin, ecXmax,
+		ecYmin,  ecYmax, ecZmin, ecZmax);
 	    break;
 	  case ORTHOGONAL:
 	    cryph::AffVector dir(-1,0,-1);
-	    ec_lds = cryph::Matrix4x4::oblique(-4*ModelViewWithLighting::viewingRadius, -ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius,
-		-ModelViewWithLighting::viewingRadius, ModelViewWithLighting::viewingRadius, ecZmin, ecZmax, dir);
+	    ec_lds = cryph::Matrix4x4::oblique(-4*ModelViewWithLighting::viewingRadius, ecXmin, ecXmax,
+		ecYmin,  ecYmax, ecZmin, ecZmax, dir);
 	    break;
 	      
 	}
+	
+	ec_lds = ec_lds;//dynamic_view
 
-	ec_lds = cryph::Matrix4x4::scale(dynamic_zoomScale,dynamic_zoomScale,dynamic_zoomScale) * ec_lds;
+	//ec_lds = cryph::Matrix4x4::scale(dynamic_zoomScale,dynamic_zoomScale,dynamic_zoomScale) * ec_lds;
 	      
 	//ec_lds = cryph::Matrix4x4::orthogonal(xmin,xmax,ymin,ymax,ecZmin, ecZmax);
 	//    cryph::Matrix4x4 cryph::Matrix4x4::lookAt(

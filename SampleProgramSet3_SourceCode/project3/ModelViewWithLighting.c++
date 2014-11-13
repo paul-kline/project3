@@ -23,7 +23,7 @@ std::string ModelViewWithLighting::vShaderSource = "YOUR_LOCAL.vsh";
 std::string ModelViewWithLighting::fShaderSource = "YOUR_LOCAL.fsh";
 
 float ModelViewWithLighting::viewingRadius = 1;
-
+double dynamic_zoomScale = 1;
 ModelViewWithLighting::ModelViewWithLighting()
 {
 	if (shaderProgram == 0)
