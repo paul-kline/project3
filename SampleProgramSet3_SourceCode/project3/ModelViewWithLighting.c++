@@ -69,3 +69,10 @@ void ModelViewWithLighting::setViewingRadius(float viewingRadius_)
 
 }
 
+void ModelViewWithLighting::addToGlobalRotationDegrees(double rx, double ry, double rz)
+{
+	dynamic_view = cryph::Matrix4x4::xRotationDegrees(ry) * cryph::Matrix4x4::yRotationDegrees(rx)*dynamic_view;
+	// TODO: 1. UPDATE dynamic_view
+	// TODO: 2. Use dynamic_view in ModelView::getMatrices
+}
+

@@ -4,7 +4,7 @@
 
 #include "MyController.h"
 #include "ModelView.h"
-
+#include "ModelViewWithLighting.h"
 int MyController::clickedx=0;
 int MyController::clickedy=0;
 bool MyController::leftclick_down = false;
@@ -37,8 +37,8 @@ void MyController::handleMouseMotion(int x, int y)
   if(MyController::leftclick_down){
     float deltaX = x - clickedx;
     float deltaY = y - clickedy;     
-    std::cout << deltaX << ", " << deltaY << "\n";
-    ModelView::addToGlobalRotationDegrees(deltaY,deltaX, 0);
+//    std::cout << deltaX << ", " << deltaY << "\n";
+    ModelViewWithLighting::addToGlobalRotationDegrees(deltaX/150,deltaY/150, 0);
     redraw();
     
   }  else{

@@ -24,6 +24,8 @@ public:
 
 	static void setViewingRadius(float viewingRadius_);
 	static float viewingRadius;
+	
+	static void addToGlobalRotationDegrees(double rx, double ry, double rz);
 protected:
 
 	static ShaderIF* shaderIF;
