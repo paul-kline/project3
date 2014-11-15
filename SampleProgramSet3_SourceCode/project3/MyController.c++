@@ -29,7 +29,15 @@ void MyController::handleMouseButton(Controller::MouseButton button, bool presse
   }
   if(button == LEFT_BUTTON && !pressed){
     MyController::leftclick_down = false;
+    
+    
+//    /* //keep it there!
+//     float deltaX = (x - clickedx)/5;
+//     float deltaY = (y - clickedy)/5;  
+//     */ModelViewWithLighting::dynamic_view =  cryph::Matrix4x4::xRotationDegrees(deltaY) * cryph::Matrix4x4::yRotationDegrees(deltaX)*ModelViewWithLighting::dynamic_view;
+    
   }
+  
   
 }
 void MyController::handleMouseMotion(int x, int y)
@@ -38,8 +46,10 @@ void MyController::handleMouseMotion(int x, int y)
     float deltaX = x - clickedx;
     float deltaY = y - clickedy;     
 //    std::cout << deltaX << ", " << deltaY << "\n";
-    ModelViewWithLighting::addToGlobalRotationDegrees(deltaX/150,deltaY/150, 0);
+    ModelViewWithLighting::addToGlobalRotationDegrees(deltaX/5,deltaY/5, 0);
     redraw();
+     clickedx = x;
+     clickedy = y;
     
   }  else{
     /*

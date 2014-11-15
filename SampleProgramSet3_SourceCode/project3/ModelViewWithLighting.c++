@@ -24,6 +24,9 @@ std::string ModelViewWithLighting::fShaderSource = "YOUR_LOCAL.fsh";
 
 float ModelViewWithLighting::viewingRadius = 1;
 double dynamic_zoomScale = 1;
+
+float ModelViewWithLighting::globalRX =0;
+float ModelViewWithLighting::globalRY=0;
 ModelViewWithLighting::ModelViewWithLighting()
 {
 	if (shaderProgram == 0)
@@ -71,7 +74,9 @@ void ModelViewWithLighting::setViewingRadius(float viewingRadius_)
 
 void ModelViewWithLighting::addToGlobalRotationDegrees(double rx, double ry, double rz)
 {
-	dynamic_view = cryph::Matrix4x4::xRotationDegrees(ry) * cryph::Matrix4x4::yRotationDegrees(rx)*dynamic_view;
+  globalRX +=rx;
+  globalRY += ry;
+	dynamic_view = cryph::Matrix4x4::xRotationDegrees(globalRY) * cryph::Matrix4x4::yRotationDegrees(globalRX);//*dynamic_view;
 	// TODO: 1. UPDATE dynamic_view
 	// TODO: 2. Use dynamic_view in ModelView::getMatrices
 }

@@ -26,6 +26,10 @@ public:
 	static float viewingRadius;
 	
 	static void addToGlobalRotationDegrees(double rx, double ry, double rz);
+	
+	static float globalRX;
+	static float globalRY;
+	
 protected:
 
 	static ShaderIF* shaderIF;
