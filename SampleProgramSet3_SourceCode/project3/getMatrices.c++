@@ -86,11 +86,11 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	     // ec_lds = cryph::Matrix4x4::perspective( zpp,  -(xmax - xmin)/2, (xmax-xmin)/2,
 		//      -(ymax-ymin)/2,  (ymax-ymin)/2,  ecZmin,  ecZmax);
 	      break;
-	  case OBLIQUE:
+	  case ORTHOGONAL:
 	    ec_ecu = cryph::Matrix4x4::orthogonal( ecXmin, ecXmax,
 		ecYmin,  ecYmax, ecZmin, ecZmax);
 	    break;
-	  case ORTHOGONAL:
+	  case OBLIQUE:
 	    cryph::AffVector dir(-1,0,-1);
 	    ec_ecu = cryph::Matrix4x4::oblique(-4*ModelViewWithLighting::viewingRadius, ecXmin, ecXmax,
 		ecYmin,  ecYmax, ecZmin, ecZmax, dir);

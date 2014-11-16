@@ -6,7 +6,7 @@
 #include "GLFWController.h"
 #include "HalfColumn.h"
 #include "Block.h"
-
+#include "ModelViewWithLighting.h" // this is to increment the number of light sources.
 
 
   

@@ -76,6 +76,7 @@ void set3DViewingInformation(double xyz[6])
 	ModelView::setProjectionPlaneZ(zpp);
 	ModelView::setECZminZmax(zmin, zmax);
 	ModelViewWithLighting::setViewingRadius(viewingRadius);
+	ModelViewWithLighting::letThereBeLight(); //inialize a light source!
 
 }
 
@@ -92,6 +93,9 @@ int main(int argc, char* argv[])
 	ModelViewWithLighting::setShaderSources("vsh.c++", "fsh.c++");
 	// create your scene, adding things to the Controller....
 	
+	ModelViewWithLighting* MVwLight = new ModelViewWithLighting();
+	//MVwLight->render();
+	c.addModel(MVwLight);
 	Column::instances = 0;
 	cryph::AffPoint bottom1(-1.0,2,9);
 	cryph::AffPoint top1(1,1,1);

@@ -42,15 +42,90 @@ in vec3 mcNormal; // incoming normal vector in model coordinates
 
 out vec3 colorToFS;
 
+
+uniform int currentProjection=2; //alphabetical: 0=OBLIQUE, 1=ORTHOGONAL, 2=PERSPECTIVE
+uniform vec3 obliqueDirection = vec3(0,0,1);
+uniform vec4 p_mcLights[20];
+uniform vec3 lightStrength[20];
+uniform int actualNumLights = 1;
+uniform vec3 ambientStrength = vec3(0.515, 0.515, 0.515);
+uniform vec3 ka = vec3( 1.0, 0.5, 0.5); //these should all be set.
+//uniform vec4 kd = vec4( 1.0, 0.5, 0.5, 1.0 );
+uniform vec3 ks = vec3( 1.0, 0.5, 0.5); 
+uniform float m=1.0;
 vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 {
 	// Simplistic lighting model:
 	// Reflected color will be a function of angle between the normal
 	// vector and the light source direction. Specifically:
-
+//find v, the vector towards the viewer
+  //
+    vec3 v = vec3(0,0,1);
+    switch (currentProjection) {
+	case 0://OBLIQUE
+	  v = normalize((mc_ec* vec4(obliqueDirection,0)).xyz);
+	  break;
+	case 1: //ORTHOGONAL
+	  //no change needed, already 0,0,1;
+	  break;
+	case 2: //PERSPECTIVE
+	  v= -normalize(ec_Q);
+	  break;
+	
+	}
+  
+	
+    vec3 theColor = ka * ambientStrength;
+  
+	for(int i = 0; i < actualNumLights; i++){
+	 
+	  if(dot(ec_nHat, v) <0){
+	    ec_nHat*=-1; //flip!
+	  }
+	  //0 means directional! otherwise, it's a location and direction toward light source must be computed.
+	  bool directional = p_mcLights[i].w == 0 ; 
+	  vec3 ecLight = (mc_ec * p_mcLights[i]).xyz;
+	  vec3 li_hat = normalize((directional)? ecLight : (ecLight - ec_Q));
+	  if(dot(ec_nHat, li_hat)<0){
+	    continue;
+	  }
+	  //calculate reflector ray!
+	  //R = 2N (N . L) - L
+	  vec3 r_i = 2*ec_nHat * (dot(ec_nHat, li_hat)) - li_hat;
+	  if(dot (r_i, v) < 0){
+	    r_i = vec3(0,0,0);
+	  }//we ignore
+	  
+	  
+	  //linear kill off for now
+	  float fi_Q = (directional)? 1 : (1.0 / (length(ecLight - ec_Q)));
+	  theColor += fi_Q * lightStrength[i]* ( kd * (dot(ec_nHat, li_hat))  + ks*(pow(dot(r_i, v), m)));
+	 
+	  
+	  
+	  
+	  
+	}
+  
+  
+  
 	float factor = abs(dot(normalize(lightSourceDir), ec_nHat));
-
-	return factor * kd;
+	
+	
+	//vec3 theColor = factor * kd;
+	
+	
+	//fix the overflow!!
+	float max =((theColor.x > theColor.y)? theColor.x : theColor.y);
+	max = (theColor.z > max)? theColor.z : max;
+	
+	if(max>1){
+	 theColor.x /= max;
+	 theColor.y /= max;
+	 theColor.z /= max;
+	}
+	
+	return theColor; // factor * kd; //
 }
 
 void main ()
