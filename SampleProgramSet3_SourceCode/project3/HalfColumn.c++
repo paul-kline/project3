@@ -87,7 +87,7 @@ void HalfColumn::defineHalfColumn()
 	
 	cryph::AffVector currVToPoint = defineStarter(); //starter is unit vector.
 	//std::cout << "direction vector: " << direction.dx << ", " << direction.dy << ", " << direction.dz << "\n";
-	std::cout << "starter vector: " << currVToPoint.dx << ", " << currVToPoint.dy << ", " << currVToPoint.dz << "\n";
+//	std::cout << "starter vector: " << currVToPoint.dx << ", " << currVToPoint.dy << ", " << currVToPoint.dz << "\n";
 	cryph::AffVector mvDir = direction.cross(currVToPoint);
 	cryph::AffPoint currpoint_b = bottom + bradius*currVToPoint;
 	cryph::AffPoint currpoint_t = top + tradius*currVToPoint;
@@ -222,10 +222,12 @@ void HalfColumn::render()
 
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
+	
+	
 	float mat[16];
 	glUniformMatrix4fv(ppuLoc_mc_ec, 1, false, mc_ec.extractColMajor(mat));
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
-
+	ModelViewWithLighting::letThereBeLight(color, color,color,22);
 	
 
 	if (displayCylFill)

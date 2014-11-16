@@ -30,17 +30,17 @@ public:
 	static float globalRX;
 	static float globalRY;
 	
-	static void letThereBeLight();
-	static int numberOfLightSources;
+	void letThereBeLight(float ka[3],float kd[3], float ks[3],float m);
+	static GLint numberOfLightSources;
 	static float lightSources[20 * 4]; //maxed at 20. px,py,pz, w. 
 	static float lightStrengths[20 * 3]; //also 20.
 	static float ambientStrength[3];
 	
 	
 	
-	void getMCBoundingBox(double* xyzLimits) const;
+	//void getMCBoundingBox(double* xyzLimits) const;
 	
-	void render();
+	void render(){};
 	
 protected:
 
@@ -53,7 +53,7 @@ protected:
 
 	
 	static GLint uLoc_p_ecLightPos, uLoc_lightStrength, uLoc_actualNumLights,uLoc_globalAmbient;
-	static GLint uProjection, uObliqueDirection, uLoc_ka,uLoc_ks; 
+	static GLint uProjection, uObliqueDirection, uLoc_ka,uLoc_ks, uLoc_m; 
 /*	
 uniform int currentProjection=2; //alphabetical: 0=OBLIQUE, 1=ORTHOGONAL, 2=PERSPECTIVE
 uniform vec3 obliqueDirection = vec3(0,0,1);

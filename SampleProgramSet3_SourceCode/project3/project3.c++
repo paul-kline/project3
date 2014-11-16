@@ -76,7 +76,7 @@ void set3DViewingInformation(double xyz[6])
 	ModelView::setProjectionPlaneZ(zpp);
 	ModelView::setECZminZmax(zmin, zmax);
 	ModelViewWithLighting::setViewingRadius(viewingRadius);
-	ModelViewWithLighting::letThereBeLight(); //inialize a light source!
+	//ModelViewWithLighting::letThereBeLight(); //inialize a light source!
 
 }
 
@@ -93,9 +93,9 @@ int main(int argc, char* argv[])
 	ModelViewWithLighting::setShaderSources("vsh.c++", "fsh.c++");
 	// create your scene, adding things to the Controller....
 	
-	ModelViewWithLighting* MVwLight = new ModelViewWithLighting();
+	//ModelViewWithLighting* MVwLight = new ModelViewWithLighting();
 	//MVwLight->render();
-	c.addModel(MVwLight);
+	//c.addModel(MVwLight);
 	Column::instances = 0;
 	cryph::AffPoint bottom1(-1.0,2,9);
 	cryph::AffPoint top1(1,1,1);
@@ -283,7 +283,7 @@ int main(int argc, char* argv[])
 	float roofLength = mainBuilding.length + building.length;
 	Block roof(roofHeight, buildingWidth,roofLength, buildingUpVector, building.frontLeftBottomCorner + (heightSoFar*buildingUpVector), building.frontRightBottomCorner + (heightSoFar*buildingUpVector), burlywood);
 	c.addModel(&roof);
-	glClearColor(1.0, 1.0, 0.70, 1.0);
+	glClearColor(0.0, 0.0, 0.0, 0.50);
 
 	
 	
@@ -453,6 +453,8 @@ int main(int argc, char* argv[])
 	cryph::AffPoint otherFireRightPoint = otherFireLeftPoint + (-v)*firePitWidth;
 	FirePit firepit2(buildingHeight*1.2, firePitWidth, otherFireLeftPoint, buildingUpVector, firePitRight-firePitLeft, burlywood, 12);
 	  c.addModel(&firepit2);
+	  std::cout << "FIREPIT2: "<< firepit2.fancyColumn.top << "\n\n";
+	  std::cout << "FIREPIT1: "<< firepit.fancyColumn.top << "\n\n";
 	
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);

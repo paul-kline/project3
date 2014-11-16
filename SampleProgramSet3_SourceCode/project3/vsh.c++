@@ -49,7 +49,7 @@ uniform vec4 p_mcLights[20];
 uniform vec3 lightStrength[20];
 uniform int actualNumLights = 1;
 uniform vec3 ambientStrength = vec3(0.515, 0.515, 0.515);
-uniform vec3 ka = vec3( 1.0, 0.5, 0.5); //these should all be set.
+uniform vec3 ka = vec3( 0.50, 0.0, 0.0); //these should all be set.
 //uniform vec4 kd = vec4( 1.0, 0.5, 0.5, 1.0 );
 uniform vec3 ks = vec3( 1.0, 0.5, 0.5); 
 uniform float m=1.0;
@@ -75,7 +75,7 @@ vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 	}
   
 	
-    vec3 theColor = ka * ambientStrength;
+    vec3 theColor = ka * ambientStrength; //kd = ka
   
 	for(int i = 0; i < actualNumLights; i++){
 	 

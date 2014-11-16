@@ -305,7 +305,7 @@ void Block::render()
 	glUniformMatrix4fv(ppuLoc_mc_ec, 1, false, mc_ec.extractColMajor(mat));
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
 
-	
+	ModelViewWithLighting::letThereBeLight(color,color,color,20);
 
 	if (displayCylFill2)
 	{
@@ -318,8 +318,10 @@ void Block::render()
 		renderBlock(black2);
 	}
 	
-
+	
+	
 	glUseProgram(pgm);
+	
 }
 
 float Block::getWidth(){

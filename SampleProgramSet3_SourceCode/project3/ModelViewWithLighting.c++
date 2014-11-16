@@ -10,6 +10,7 @@
 #include "ModelViewWithLighting.h"
 #include "ShaderIF.h"
 #include "MyController.h"
+//#include "GLFWController.h"
 
 ShaderIF* ModelViewWithLighting::shaderIF = NULL;
 int ModelViewWithLighting::numInstances = 0;
@@ -31,6 +32,7 @@ float ModelViewWithLighting::lightStrengths[20 * 3]; //also 20.
 float ModelViewWithLighting::ambientStrength[3];
 GLint ModelViewWithLighting::uLoc_ka = -2;
 GLint ModelViewWithLighting::uLoc_ks = -2;
+GLint ModelViewWithLighting::uLoc_m = -2;
 
 std::string ModelViewWithLighting::vShaderSource = "vsh.c++";
 std::string ModelViewWithLighting::fShaderSource = "fsh.c++";
@@ -40,9 +42,10 @@ double dynamic_zoomScale = 1;
 
 float ModelViewWithLighting::globalRX =0;
 float ModelViewWithLighting::globalRY=0;
-int ModelViewWithLighting::numberOfLightSources = 0;
+GLint ModelViewWithLighting::numberOfLightSources = 1;
 ModelViewWithLighting::ModelViewWithLighting()
 {
+  //std::cout << "MAKING A ModelViewWithLighting!!!!!!!!!!!!!!!! INSTANCE NUMBER: " << numInstances << "\n\n";
 	if (shaderProgram == 0)
 	{
 		shaderIF = new ShaderIF(vShaderSource, fShaderSource);
@@ -50,6 +53,46 @@ ModelViewWithLighting::ModelViewWithLighting()
 		fetchGLSLVariableLocations();
 	}
 	numInstances++;
+  ModelViewWithLighting::ambientStrength[0] = 0.15;
+  ModelViewWithLighting::ambientStrength[1] = 0.15;
+  ModelViewWithLighting::ambientStrength[2] = 0.15;
+
+ 
+  
+  ModelViewWithLighting::lightSources[0] = -10;
+  ModelViewWithLighting::lightSources[1] = 30;
+  ModelViewWithLighting::lightSources[2] = 35;
+  ModelViewWithLighting::lightSources[3] = 0;//high noon! // 0= directional, 1 = local
+  
+  ModelViewWithLighting::lightStrengths[0] = 0.05;//15;
+  ModelViewWithLighting::lightStrengths[1] = 0.05;//15;
+  ModelViewWithLighting::lightStrengths[2] = 0.5;//15;
+  
+  
+  //firepit1
+  ModelViewWithLighting::lightSources[4] = 35;
+  ModelViewWithLighting::lightSources[5] = 28;
+  ModelViewWithLighting::lightSources[6] = 45;
+  ModelViewWithLighting::lightSources[7] = 1; // 0= directional, 1 = local
+  
+  ModelViewWithLighting::lightStrengths[3] = 4.95;//15;
+  ModelViewWithLighting::lightStrengths[4] = 0.95;//15;
+  ModelViewWithLighting::lightStrengths[5] = 0.95;//15;
+  
+  //firepit2
+  ModelViewWithLighting::lightSources[8] = -35;
+  ModelViewWithLighting::lightSources[9] = 26;
+  ModelViewWithLighting::lightSources[10] = 45;
+  ModelViewWithLighting::lightSources[11] = 1; // 0= directional, 1 = local
+  
+  ModelViewWithLighting::lightStrengths[6] = 4.95;//15;
+  ModelViewWithLighting::lightStrengths[7] = 0.95;//15;
+  ModelViewWithLighting::lightStrengths[8] = 0.95;//15;
+  
+  
+  
+  ModelViewWithLighting::numberOfLightSources = 3;
+	
 }
 
 ModelViewWithLighting::~ModelViewWithLighting()
@@ -87,12 +130,13 @@ uniform vec3 ks = vec3( 1.0, 0.5, 0.5);
 uniform float m;*/				
 		uLoc_p_ecLightPos = ppUniformLocation(shaderProgram, "p_mcLights");
 		uLoc_lightStrength= ppUniformLocation(shaderProgram, "lightStrength");
-		uLoc_actualNumLights= ppUniformLocation(shaderProgram,"actualNumLights");
+		ModelViewWithLighting::uLoc_actualNumLights= ppUniformLocation(shaderProgram,"actualNumLights");
 		uLoc_globalAmbient = ppUniformLocation(shaderProgram, "ambientStrength");
 		uProjection = ppUniformLocation(shaderProgram, "currentProjection");
 		uObliqueDirection = ppUniformLocation(shaderProgram, "obliqueDirection");
 		uLoc_ka = ppUniformLocation(shaderProgram, "ka");
 		uLoc_ks = ppUniformLocation(shaderProgram, "ks");
+		uLoc_m = ppUniformLocation(shaderProgram, "m");
 		
 	}
 }
@@ -117,48 +161,25 @@ void ModelViewWithLighting::addToGlobalRotationDegrees(double rx, double ry, dou
 	// TODO: 2. Use dynamic_view in ModelView::getMatrices
 }
 
-void ModelViewWithLighting::letThereBeLight()
-{ //set up the light shenanigans
-  //set the number of light sources 
-  //set the lightsource in mc
-  //set 
-  
-  ModelViewWithLighting::ambientStrength[0] = 0.15;
-  ModelViewWithLighting::ambientStrength[1] = 0.15;
-  ModelViewWithLighting::ambientStrength[2] = 0.15;
-  
- // glUniform3fv(uLoc_globalAmbient, 1, ModelViewWithLighting::ambientStrength);
+void ModelViewWithLighting::letThereBeLight(float ka[3],float kd[3], float ks[3], float m)
+{ 
 //   
+//   ModelViewWithLighting::numberOfLightSources = 3;
 //   
-  //float* mainlight= new float[4];
-  //mainlight[0] = 100;
-  // mainlight[1] = 100;
-  //mainlight[2] = 100;
-  //mainlight[3] = 0; //directional
-  //lightSources[0] = mainlight;
-  lightSources[0] = 1000;
-  lightSources[1] = 1000;
-  lightSources[2] = 1000;
-  lightSources[3] = 0; //directional
+//    int numLights = ModelViewWithLighting::numberOfLightSources;
+   glUniform4fv(uLoc_p_ecLightPos, ModelViewWithLighting::numberOfLightSources, ModelViewWithLighting::lightSources);
+   glUniform3fv(uLoc_lightStrength, ModelViewWithLighting::numberOfLightSources, ModelViewWithLighting::lightStrengths);
+   glUniform1i(ModelViewWithLighting::uLoc_actualNumLights, ModelViewWithLighting::numberOfLightSources);
 //   
-//   float* mainStrength = new float[3];
-//   mainStrength[0] = 0.15;
-//   mainStrength[1] = 0.15;
-//   mainStrength[2] = 0.15;
-//   lightStrengths[0] = mainStrength;
-     lightStrengths[0] = 1;//15;
-     lightStrengths[1] = 1;//15;
-     lightStrengths[2] = 1;//15;
-//   
-  ModelViewWithLighting::numberOfLightSources++;
-//   
-//   int numLights = ModelViewWithLighting::numberOfLightSources;
-//   glUniform4fv(uLoc_p_ecLightPos, numLights, lightSources);
-//   glUniform3fv(uLoc_lightStrength, numLights, lightStrengths);
-//   glUniform1i(uLoc_actualNumLights, numLights);
-//   
-//    int proj = (ModelView::projType == OBLIQUE)? 0 : ( (ModelView::projType == ORTHOGONAL)? 1 : 2);
-   //glUniform1i(uProjection, proj);
+    GLint proj = (ModelView::projType == OBLIQUE)? 0 : ( (ModelView::projType == ORTHOGONAL)? 1 : 2);
+   glUniform1i(ModelViewWithLighting::uProjection, proj);
+   
+   glUniform3fv(ppuLoc_kd, 1, kd);
+   glUniform3fv(uLoc_ka, 1, ka);
+   glUniform3fv(uLoc_ks, 1, ks);
+   glUniform1f(uLoc_m, m);
+   
+   
 //     
 //   
   
@@ -167,22 +188,10 @@ void ModelViewWithLighting::letThereBeLight()
 
 }
 
-void ModelViewWithLighting::render()
-{
-//   int numLights = ModelViewWithLighting::numberOfLightSources;
-//   glUniform4fv(uLoc_p_ecLightPos, numLights, lightSources);
-//   glUniform3fv(uLoc_lightStrength, numLights, lightStrengths);
-//   glUniform1i(uLoc_actualNumLights, numLights);
-//   int proj = (ModelView::projType == OBLIQUE)? 0 : ( (ModelView::projType == ORTHOGONAL)? 1 : 2);
-//   glUniform1i(uProjection, proj);
-//   glUniform3fv(uLoc_globalAmbient, 1, ModelViewWithLighting::ambientStrength);
-//   glUniform3fv(uLoc_globalAmbient, 1, ModelViewWithLighting::ambientStrength);
-}
-
-void ModelViewWithLighting::getMCBoundingBox(double* xyzLimits) const
-{
-  xyzLimits[0] = xyzLimits[1] = xyzLimits[2] = xyzLimits[3] = xyzLimits[4] = xyzLimits[5]=0.0;
-}
+// void ModelViewWithLighting::getMCBoundingBox(double* xyzLimits) const
+// {
+//   xyzLimits[0] = xyzLimits[1] = xyzLimits[2] = xyzLimits[3] = xyzLimits[4] = xyzLimits[5]=0.0;
+// }
   
   
   

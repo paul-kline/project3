@@ -514,10 +514,12 @@ void Column::render()
 
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
+	
+	
 	float mat[16];
 	glUniformMatrix4fv(ppuLoc_mc_ec, 1, false, mc_ec.extractColMajor(mat));
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
-
+	ModelViewWithLighting::letThereBeLight(color,color,color,20);
 	
 
 	if (displayCylFill)
