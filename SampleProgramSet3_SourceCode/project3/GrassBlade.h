@@ -16,11 +16,14 @@ public:
 		   int attenuationCurveCode_,float totalTorque_ , int torqueApplicationFunctionCode_ );
 	virtual ~GrassBlade();
 
+	static int instances;
 	cryph::AffPoint bottom;
 	cryph::AffVector baseDirection;
-	--cryph::AffPoint* points; 
+	//cryph::AffPoint* points;
+	
 	typedef float vec3[3];
 	vec3* points;
+	vec3* normals;
 	float baseWidth;
 	cryph::AffVector upV;
 	cryph::AffVector outV;
@@ -42,8 +45,8 @@ private:
 	GLuint vao[1];
 	GLuint vbo[2];
   
-	float (*f_Radial)(float);
-	float (*f_Attenuation)(float);
+	float (GrassBlade::*f_Radial)(float);
+	float (GrassBlade::*f_Attenuation)(float);
 
 	void defineGrassBlade();
 	void renderGrassBlade(float * color);

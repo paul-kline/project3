@@ -71,21 +71,21 @@ ModelViewWithLighting::ModelViewWithLighting()
   
   //firepit1
   ModelViewWithLighting::lightSources[4] = 35;
-  ModelViewWithLighting::lightSources[5] = 28;
+  ModelViewWithLighting::lightSources[5] = 30;
   ModelViewWithLighting::lightSources[6] = 45;
   ModelViewWithLighting::lightSources[7] = 1; // 0= directional, 1 = local
   
-  ModelViewWithLighting::lightStrengths[3] = 4.95;//15;
+  ModelViewWithLighting::lightStrengths[3] = 10.00;//15;
   ModelViewWithLighting::lightStrengths[4] = 0.95;//15;
   ModelViewWithLighting::lightStrengths[5] = 0.95;//15;
   
   //firepit2
   ModelViewWithLighting::lightSources[8] = -35;
-  ModelViewWithLighting::lightSources[9] = 26;
+  ModelViewWithLighting::lightSources[9] = 30;
   ModelViewWithLighting::lightSources[10] = 45;
   ModelViewWithLighting::lightSources[11] = 1; // 0= directional, 1 = local
   
-  ModelViewWithLighting::lightStrengths[6] = 4.95;//15;
+  ModelViewWithLighting::lightStrengths[6] = 10.00;//15;
   ModelViewWithLighting::lightStrengths[7] = 0.95;//15;
   ModelViewWithLighting::lightStrengths[8] = 0.95;//15;
   

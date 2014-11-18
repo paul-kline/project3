@@ -9,6 +9,7 @@
 #include "FancyColumn.h"
 #include "SuperFancyColumn.h"
 #include "FirePit.h"
+#include "GrassBlade.h"
 void set3DViewingInformation(double xyz[6])
 {
 	ModelView::setMCRegionOfInterest(xyz);
@@ -79,7 +80,53 @@ void set3DViewingInformation(double xyz[6])
 	//ModelViewWithLighting::letThereBeLight(); //inialize a light source!
 
 }
-
+float frand(float L, float H){
+ return  L + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(H-L)));
+  
+}
+void makeGrassField(Block* ground, Controller* c){
+  float forestGreen[3] = {0.133333, 0.545098, 0.133333}; //forest green
+  float darkGreen[3] = {0.000, 0.392, 0.000}; // dark green
+  
+  cryph::AffPoint topLeftCorner = ground->frontLeftBottomCorner + ground->height*cryph::AffVector(0,1,0);
+  float spacing = ground->width / 100;
+  
+  int numGrasses = 9000;
+  cryph::AffVector toRight = ground->frontRightBottomCorner - ground->frontLeftBottomCorner;
+  toRight.normalize();
+  cryph::AffVector toBack = ground->getTowardsBackUnitVec();
+  for(int i =0; i < numGrasses; i++){
+   float r = frand(0,1);
+   float r2 = frand(0,1);
+   cryph::AffPoint bottomCenter = topLeftCorner + r*ground->length* (toBack) + r2*ground->width*toRight;
+    // 	:GrassBlade(int num_points_,
+// 		       cryph::AffPoint bottom_, float baseWidth_, cryph::AffVector baseDirection_,
+// 		       cryph::AffVector upV_, cryph::AffVector outV_, float upDistance_, float outDistance_, 
+// 		       float colorT_[3],float colorB_[3], 
+// 		       int attenuationCurveCode_,float totalTorque_, int torqueApplicationFunctionCode_ ){
+   float nump = 20; 
+   float green[3] = {0.133333, 0.545098, 0.133333};
+   int attenuation = 3;
+   float radianss = frand(0,1); //between 0 and 1;
+   
+   float baseWidth = frand(1,8);//float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	
+	cryph::AffVector baseDir( frand(-1,1), 0, frand(-1,1) );
+	
+	cryph::AffVector upv( frand(-1,1),1, frand(-1,1) );
+	cryph::AffVector outv( frand(-1,1) , 0 , frand(-1,1) );  
+	float up = frand(1,10);
+	float out = frand(up/12, up/2);
+	float shade = frand(0,1);
+	float randomShade[3] = {shade*forestGreen[0], shade*forestGreen[1], shade*forestGreen[2]};
+	GrassBlade* grassblade = new GrassBlade(nump, bottomCenter, baseWidth, baseDir, upv, outv, up, out, randomShade, randomShade, attenuation, radianss, 2);
+	c->addModel(grassblade);
+   
+    
+    
+    
+  }
+}
 int main(int argc, char* argv[])
 {
   
@@ -115,7 +162,7 @@ int main(int argc, char* argv[])
 	
 	//begin real project stuff;
 	// base block ;
-	float groundColor[3] = {0.000, 0.392, 0.000}; // dark green
+	float groundColor[3] = {0.000, 0.392, 0.000}; // dark green {1,1,1};//
 	Block ground(1,200, 500, cryph::AffVector(0,1,0), cryph::AffPoint(-100,-1,100) ,cryph::AffPoint(100,-1,100), groundColor);
 	c.addModel(&ground);
 	
@@ -326,6 +373,10 @@ int main(int argc, char* argv[])
 	   Column* column = (new Column( bottomP, bottomRadius, topP, topRadius, gold, true));
 //  	 Column column = *(new Column( *(new cryph::AffPoint(newx,newy,newz)), bottomRadius, *(new cryph::AffPoint(newxt,newyt,newzt)), topRadius, gold, true));
 	 c.addModel(column);
+	 
+	 
+	 
+	 
 	  
 	  
 	}
@@ -434,6 +485,20 @@ int main(int argc, char* argv[])
 	  
 	  
 	}
+	//Grass
+	cryph::AffPoint gbot =cryph::AffPoint(45,40,20); //firstConeCenter + (cryph::AffVector(0,20,0)) + cryph::AffVector(0,0,200);
+	
+	int attenuation = 3;
+// 	:GrassBlade(int num_points_,
+// 		       cryph::AffPoint bottom_, float baseWidth_, cryph::AffVector baseDirection_,
+// 		       cryph::AffVector upV_, cryph::AffVector outV_, float upDistance_, float outDistance_, 
+// 		       float colorT_[3],float colorB_[3], 
+// 		       int attenuationCurveCode_,float totalTorque_, int torqueApplicationFunctionCode_ ){
+	float nump = 20; float basewidth = 20; float up = 70; float out = 10; float radianss = 0;//3.14592/2.5;
+	float green[3] = {0.133333, 0.545098, 0.133333};
+	GrassBlade* grassblade = new GrassBlade(nump, gbot, basewidth, cryph::AffVector(0,0,1), cryph::AffVector(0,1,0), cryph::AffVector(1,0,0), up, out, green, gold, attenuation, radianss, 2);
+	c.addModel(grassblade);
+	makeGrassField(&ground, &c);
 	
 	//make a firepit
 	cryph::AffPoint stairsCenter = (stairs.frontRightBottomCorner-stairs.frontLeftBottomCorner)/2;
@@ -468,3 +533,10 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+
+
+
+  
+  
+  
+  

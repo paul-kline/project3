@@ -485,7 +485,7 @@ void Column::setBounds()
 
 void Column::initializeCappingIndices()
 {
-  for (int i=0 ; i<=NUM_AROUND_CIRCLE ; i++)
+  for (int i=0 ; i<NUM_AROUND_CIRCLE ; i++)
 	{
 		unsigned int j = 2 * i;
 		bottomCap[i]=j;
@@ -498,9 +498,25 @@ void Column::initializeCappingIndices()
 void Column::renderColumn(vec3 color){
 	//typedef float vec3[3];
 	//vec3 colColor = {1, 0.0, 0.0};
-	glUniform3fv(ppuLoc_kd, 1, color);
+// 	glUniform3fv(ppuLoc_kd, 1, color);
+	
+	
+	
 	glBindVertexArray(vao[0]);
+	if(capped){
+	//  std::cout << "direction used for normal : " << direction << "\n\n";
+	    glDisableVertexAttribArray(pvaLoc_mcNormal);
+	    glVertexAttrib3f(pvaLoc_mcNormal, -direction.dx,-direction.dy,-direction.dz);
+	    glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE),GL_UNSIGNED_INT,  bottomCap);
+	    
+	    glVertexAttrib3f(pvaLoc_mcNormal, -direction.dx,-direction.dy,-direction.dz);
+	    glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE),GL_UNSIGNED_INT,  topCap);
+	   // 
+	  
+	}
+	glEnableVertexAttribArray(pvaLoc_mcNormal);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(NUM_AROUND_CIRCLE+1)); 
+	
   
 }
 
@@ -519,9 +535,9 @@ void Column::render()
 	float mat[16];
 	glUniformMatrix4fv(ppuLoc_mc_ec, 1, false, mc_ec.extractColMajor(mat));
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
+	
 	ModelViewWithLighting::letThereBeLight(color,color,color,20);
 	
-
 	if (displayCylFill)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -532,15 +548,9 @@ void Column::render()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		renderColumn(black);
 	}
-	if(capped){
-	    glDisableVertexAttribArray(pvaLoc_mcNormal);
-	    glVertexAttrib3f(pvaLoc_mcNormal, -direction.dx,-direction.dy,-direction.dz);
-	    glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE+1),GL_UNSIGNED_INT,  bottomCap);
-	    glVertexAttrib3f(pvaLoc_mcNormal, direction.dx,direction.dy,direction.dz);
-	    glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE+1),GL_UNSIGNED_INT,  topCap);
-	    glEnableVertexAttribArray(pvaLoc_mcNormal);
-	  
-	}
+	
+	
+	
 	
 	
 	myhandleKeys();

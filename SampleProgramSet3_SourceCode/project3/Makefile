@@ -6,7 +6,7 @@ LINK = g++ -fPIC -g
 LOCAL_UTIL_LIBRARIES = -L../lib -lcryph -lfont -lglsl -lmvc
 OGL_LIBRARIES = -lglfw -lGLU -lGL
 
-OBJS = project3.o Simpleshape.o getMatrices.o ModelViewWithLighting.o MyController.o Column.o Block.o Stairs.o HalfColumn.o FancyColumn.o SuperFancyColumn.o FirePit.o
+OBJS = project3.o Simpleshape.o getMatrices.o ModelViewWithLighting.o MyController.o Column.o Block.o Stairs.o HalfColumn.o FancyColumn.o SuperFancyColumn.o FirePit.o GrassBlade.o
 all:
 	$(MAKE) -C ../mvcutil
 	$(MAKE) project3
@@ -50,6 +50,8 @@ SuperFancyColumn.o: SuperFancyColumn.h SuperFancyColumn.c++
 	$(CPP) $(C_FLAGS) SuperFancyColumn.c++	
 FirePit.o: FirePit.h FirePit.c++
 	$(CPP) $(C_FLAGS) FirePit.c++	
+GrassBlade.o: GrassBlade.h GrassBlade.c++
+	$(CPP) $(C_FLAGS) GrassBlade.c++	
 	
 clean:
 	rm -f ../mvcutil/ModelView.o ../mvcutil/ModelViewWithLighting.o ./*.o

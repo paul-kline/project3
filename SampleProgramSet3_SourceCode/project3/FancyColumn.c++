@@ -81,7 +81,7 @@ void FancyColumn::defineFancyColumn()
 	
 	cryph::AffVector currVToPoint = defineStarter(); //starter is unit vector.
 	//std::cout << "direction vector: " << direction.dx << ", " << direction.dy << ", " << direction.dz << "\n";
-	std::cout << "starter vector: " << currVToPoint.dx << ", " << currVToPoint.dy << ", " << currVToPoint.dz << "\n";
+	//std::cout << "starter vector: " << currVToPoint.dx << ", " << currVToPoint.dy << ", " << currVToPoint.dz << "\n";
 	cryph::AffVector mvDir = direction.cross(currVToPoint);
 	cryph::AffPoint currpoint_b = bottom + bradius*currVToPoint;
 	cryph::AffPoint currpoint_t = top + tradius*currVToPoint;
@@ -195,8 +195,8 @@ void FancyColumn::defineFancyColumn()
 	   }
 	 //  HalfColumn halfColumn( stairFrontLeft,myradius,(stairFrontLeft + (buildingUpVector*20)),200,color2,false,false, 3.14159/1,startP);
 	   //HalfColumn(cr            bottom_, bradius_, Point top_,               float tradius_, float color_[3], bool capped_, bool inwardNormal_, float radians_,cryph::AffPoint startAt_){
-	   std::cout << "bcenter: " << bcenter_P->x << ", " <<  bcenter_P->y << ", " << bcenter_P->z << "\n";
-	   std::cout << "tcenter: " << tcenter_P->x << ", " <<  tcenter_P->y << ", " << tcenter_P->z << "\n\n";
+	  // std::cout << "bcenter: " << bcenter_P->x << ", " <<  bcenter_P->y << ", " << bcenter_P->z << "\n";
+	  // std::cout << "tcenter: " << tcenter_P->x << ", " <<  tcenter_P->y << ", " << tcenter_P->z << "\n\n";
 	  
 	   
 	   //cryph::AffPoint b(0,200,0);
