@@ -87,7 +87,7 @@ void FirePit::defineFirePit()
   cryph::AffPoint topColumnBottom = lowercolumnbottom + (leadingcolHeight * upVector) + fancyColumnHeightPercentage*height*upVector ;
   
   //so it can hold something
-  bufferColumn = (new Column(topColumnBottom ,leadingcolRadius , topColumnBottom+ (0.6*upVector) ,leadingcolRadius  ,color,true));
+  bufferColumn = (new Column(topColumnBottom ,leadingcolRadius , topColumnBottom+ (0.1*upVector) ,leadingcolRadius  ,color,true));
   
   topColumn = *(new Column(topColumnBottom ,leadingcolRadius , topColumnBottom+ (bowlHeight*upVector) ,bigRadius  ,color,false));
   

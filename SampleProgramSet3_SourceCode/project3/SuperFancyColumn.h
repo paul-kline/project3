@@ -30,7 +30,6 @@ public:
 	cryph::AffVector toRightFrontVector;
 	void getMCBoundingBox(double* xyzLimitsF) const;
 	
-
 private:
   
   

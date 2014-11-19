@@ -68,7 +68,7 @@ void Column::defineColumn()
   
 
 	typedef float vec3[3];
-	int nPoints = 2 * (NUM_AROUND_CIRCLE + 1);
+	int nPoints = 2 * (NUM_AROUND_CIRCLE + 1) +2; //just to make sure I HAVE NEOUGHT.
 	vec3* coords = new vec3[nPoints];
 	vec3* normals = new vec3[nPoints];
 	double theta = 0.0;
@@ -137,6 +137,8 @@ void Column::defineColumn()
 		//std::cout <<"Here is the lengthof the t point: "<< (currpoint_t-top).length()<<"\n\n";
 		
 	}
+	coords[2*NUM_AROUND_CIRCLE+2][0] = bottom.x;coords[2*NUM_AROUND_CIRCLE+2][1] = bottom.y;coords[2*NUM_AROUND_CIRCLE+2][2] = bottom.z;
+	coords[2*NUM_AROUND_CIRCLE+3][0] = top.x;   coords[2*NUM_AROUND_CIRCLE+3][1] = top.y;   coords[2*NUM_AROUND_CIRCLE+3][2] = top.z;
 	glGenVertexArrays(1, vao);
 	glBindVertexArray(vao[0]);
 
@@ -179,144 +181,7 @@ cryph::AffVector Column::defineStarter(){
 void Column::handleCommand(unsigned char key, double ldsX, double ldsY)
 {
   
-//   //std::cout << "Key pressed: "<< key <<"\n";
-//   if(!Ihandle)
-//     return;
-//   
-//  
-// 
-//      GLFWController* glfwC =
-//  				dynamic_cast<GLFWController*>(Controller::getCurrentController());
-//  			if (glfwC != NULL)
-//  			{
-// 			//glfwEnable( GLFW_STICKY_KEYS );
-//  				//std::cout << "Are you holding down the 'o' key?: " << glfwGetKey(glfwC->theWindow , '+');
-//  			}
-//      //info about keys I'm interested in:
-//       bool a_down = (glfwGetKey(glfwC->theWindow , 'A') == 1)? true : false;
-//       bool s_down = (glfwGetKey(glfwC->theWindow , 'S') == 1)? true : false;
-//       bool d_down = (glfwGetKey(glfwC->theWindow , 'D') == 1)? true : false;
-//       bool w_down = (glfwGetKey(glfwC->theWindow , 'W') == 1)? true : false;
-//       bool u_down = (glfwGetKey(glfwC->theWindow , 'U') == 1)? true : false;
-//       
-//   if(key == '+' || key == '-'){
-// 	  cryph::AffVector v = ((key =='+')? (center-eye) : (eye-center));
-// 	  v.normalize();
-// 	  float zoomSize = 10;
-// 	  eye= eye + (v*zoomSize);
-// 	  //return;
-//   }
-//   if(u_down){
-//    // delete &up;
-//     up = cryph::AffVector(0,1,0);
-//    // return;
-//   }
-//     
-//   //get outa here!
-//   float mvsize = 10;
-// 	//lateral movement
-// 	if (a_down || d_down){
-// 	  cryph::AffVector v = eye -center;
-// 	  //begin different experiement.
-// 	  cryph::AffVector dir = up.cross(v);
-// 	  dir.normalize();
-// 	  float length = v.length();
-// 	  
-// 	  
-// 	  dir = dir*mvsize * ((a_down)? -1 : 1);
-// 	  cryph::AffVector newVec = v +dir;
-// 	  newVec.normalize();
-// 	  newVec*=length;
-// 	  
-// 	  eye =center +  newVec;
-// 	  
-// 	/*  
-// 	  
-// 	//  std::cout << "this is the v vector" << v.dx << ", " << v.dy << ", " << v.dz  << "\n";
-// 	  //std::cout << "EYE BEFORE" << eye.x << ", " << eye.y << ", " << eye.z  << "\n";
-// 	    float r = sqrt(pow(v.dx, 2) + pow(v.dz, 2));
-// 	    float theta = atan(v.dx/v.dz);
-// 	    float thetanew= (theta + delta_eye*((key =='d')? (-1) : 1)); //tertiary for if we should move in the other direction or not.
-// 	    if(thetanew >= M_PI/2){
-// 	      quad34 = !quad34;
-// 		//delta = -1 * delta;
-// 	      
-// 	    }
-// 
-// //	    std::cout <<"new theta :" << thetanew << "\n";
-// //   	   
-// 	    
-// 	    v.dx = sin(thetanew)*r;
-// 	    v.dz = cos(thetanew) * r;
-// 	    if(quad34){
-// 		v= -v;
-// 	      
-// 	    }
-// 	    eye = center + v;*/
-// 	//     std::cout << "EYE AFTER" << eye.x << ", " << eye.y << ", " << eye.z ;
-// 	  //  std::cout << "in!!!!!";
-// 	    GLFWController* glfwC =
-//  				dynamic_cast<GLFWController*>(Controller::getCurrentController());
-//  			if (glfwC != NULL)
-//  			{
-//  			//	glfwC->setRunWaitsForAnEvent(false);
-//  			}
-// 	    
-// 	
-// 	} 
-// 	
-// 	if (w_down || s_down){
-// 	  cryph::AffVector v = eye -center;
-// 	  float length = v.length();
-// 	  cryph::AffVector dir = up * ((w_down)? 1 : -1);
-// 	  dir.normalize();
-// 	  dir *=mvsize;
-// 	  cryph::AffVector newVec = v + dir;
-// 	  newVec.normalize();
-// 	  newVec*=length;
-// 	  eye = center + newVec;
-// 	  
-// 	  //fix up. He's a bit of a fixer upper.
-// 	  cryph::AffVector temp1 = up.cross(newVec);
-// 	  //temp1 is pointing to the "right" from the eye-ish point of view. right hand rule, recalling that newVec is pointing TOWARD the eye pos. 
-// 	  up = newVec.cross(temp1);
-// 	  up.normalize();
-// 	  
-// 	  
-// 	  
-// 	/*  
-// 	//  std::cout << "this is the v vector" << v.dx << ", " << v.dy << ", " << v.dz  << "\n";
-// 	  //std::cout << "EYE BEFORE" << eye.x << ", " << eye.y << ", " << eye.z  << "\n";
-// 	  
-// 	//  double useThisDelta = delta_eye * ((key == 'w')? 1 : -1);
-// 	  double r = v.length();
-// 	  cryph::AffVector mvThisWay;
-// 	  up.normalizeToCopy(mvThisWay);
-// 	  mvThisWay.normalize();
-// 	  v.normalize();
-// 	  mvThisWay = mvThisWay * ((key=='w')? 1 : -1);
-// 	  cryph::AffVector tempV;
-// 	  (center-eye).normalizeToCopy(tempV);
-// 	  
-// 	  
-// 	  double b= sin(delta_eye)*r; //b to align with what I have on my sketchy paper.
-// 	  
-// 	   up =up + (sin(delta_eye)*b) * tempV * ((key=='s')? -1: 1);
-// 	   up.normalize();
-// 	  eye = center + (cos(delta_eye)*r)*v + (sin(delta_eye)*r)*mvThisWay;*/
-// 	  
-// 	 
-// 	//     std::cout << "EYE AFTER" << eye.x << ", " << eye.y << ", " << eye.z ;
-// 	  //  std::cout << "in!!!!!";
-// 	    GLFWController* glfwC =
-//  				dynamic_cast<GLFWController*>(Controller::getCurrentController());
-//  			if (glfwC != NULL)
-//  			{
-//  				//glfwC->setRunWaitsForAnEvent(false);
-//  			}
-// 	    
-// 	
-// 	}
+
 
 
 }
@@ -427,32 +292,7 @@ void Column::myhandleKeys(){
 	  up = newVec.cross(temp1);
 	  up.normalize();
 	  
-	  
-	  
-	/*  
-	//  std::cout << "this is the v vector" << v.dx << ", " << v.dy << ", " << v.dz  << "\n";
-	  //std::cout << "EYE BEFORE" << eye.x << ", " << eye.y << ", " << eye.z  << "\n";
-	  
-	//  double useThisDelta = delta_eye * ((key == 'w')? 1 : -1);
-	  double r = v.length();
-	  cryph::AffVector mvThisWay;
-	  up.normalizeToCopy(mvThisWay);
-	  mvThisWay.normalize();
-	  v.normalize();
-	  mvThisWay = mvThisWay * ((key=='w')? 1 : -1);
-	  cryph::AffVector tempV;
-	  (center-eye).normalizeToCopy(tempV);
-	  
-	  
-	  double b= sin(delta_eye)*r; //b to align with what I have on my sketchy paper.
-	  
-	   up =up + (sin(delta_eye)*b) * tempV * ((key=='s')? -1: 1);
-	   up.normalize();
-	  eye = center + (cos(delta_eye)*r)*v + (sin(delta_eye)*r)*mvThisWay;*/
-	  
-	 
-	//     std::cout << "EYE AFTER" << eye.x << ", " << eye.y << ", " << eye.z ;
-	  //  std::cout << "in!!!!!";
+
 	    GLFWController* glfwC =
  				dynamic_cast<GLFWController*>(Controller::getCurrentController());
  			if (glfwC != NULL)
@@ -485,11 +325,14 @@ void Column::setBounds()
 
 void Column::initializeCappingIndices()
 {
-  for (int i=0 ; i<NUM_AROUND_CIRCLE ; i++)
+  bottomCap[0]=2*NUM_AROUND_CIRCLE+2;
+  topCap[0]= 2*NUM_AROUND_CIRCLE+3; //for the centers
+  
+  for (int i=0 ; i<=NUM_AROUND_CIRCLE ; i++)
 	{
 		unsigned int j = 2 * i;
-		bottomCap[i]=j;
-		topCap[i]=j+1;//((unsigned int)(j+1));
+		bottomCap[i+1]=j;
+		topCap[i+1]=j+1;//((unsigned int)(j+1));
 		
 	}
 
@@ -507,15 +350,15 @@ void Column::renderColumn(vec3 color){
 	//  std::cout << "direction used for normal : " << direction << "\n\n";
 	    glDisableVertexAttribArray(pvaLoc_mcNormal);
 	    glVertexAttrib3f(pvaLoc_mcNormal, -direction.dx,-direction.dy,-direction.dz);
-	    glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE),GL_UNSIGNED_INT,  bottomCap);
+	    glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE+2),GL_UNSIGNED_INT,  bottomCap);
 	    
-	    glVertexAttrib3f(pvaLoc_mcNormal, -direction.dx,-direction.dy,-direction.dz);
-	    glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE),GL_UNSIGNED_INT,  topCap);
+	    glVertexAttrib3f(pvaLoc_mcNormal, direction.dx,direction.dy,direction.dz);
+	    glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE+2),GL_UNSIGNED_INT,  topCap);
 	   // 
 	  
 	}
 	glEnableVertexAttribArray(pvaLoc_mcNormal);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(NUM_AROUND_CIRCLE+1)); 
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(NUM_AROUND_CIRCLE)+2); 
 	
   
 }
@@ -536,7 +379,10 @@ void Column::render()
 	glUniformMatrix4fv(ppuLoc_mc_ec, 1, false, mc_ec.extractColMajor(mat));
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
 	
-	ModelViewWithLighting::letThereBeLight(color,color,color,20);
+	if(!lightingModelLocked){
+	    letThereBeLight(color,color,color,27);
+	}
+	
 	
 	if (displayCylFill)
 	{

@@ -43,6 +43,15 @@ double dynamic_zoomScale = 1;
 float ModelViewWithLighting::globalRX =0;
 float ModelViewWithLighting::globalRY=0;
 GLint ModelViewWithLighting::numberOfLightSources = 1;
+bool ModelViewWithLighting::lightingModelLocked = false;
+
+
+   float ModelViewWithLighting::goldka[3] = {0.24725,0.2245,0.0645};
+   float ModelViewWithLighting::goldkd[3] = {0.34615,0.3143,0.0903};
+   float ModelViewWithLighting::goldks[3] = {0.797357,0.723991,0.208006};
+   const float ModelViewWithLighting::goldm = 83.2;
+
+
 ModelViewWithLighting::ModelViewWithLighting()
 {
   //std::cout << "MAKING A ModelViewWithLighting!!!!!!!!!!!!!!!! INSTANCE NUMBER: " << numInstances << "\n\n";
@@ -64,9 +73,9 @@ ModelViewWithLighting::ModelViewWithLighting()
   ModelViewWithLighting::lightSources[2] = 35;
   ModelViewWithLighting::lightSources[3] = 0;//high noon! // 0= directional, 1 = local
   
-  ModelViewWithLighting::lightStrengths[0] = 0.05;//15;
-  ModelViewWithLighting::lightStrengths[1] = 0.05;//15;
-  ModelViewWithLighting::lightStrengths[2] = 0.5;//15;
+  ModelViewWithLighting::lightStrengths[0] = 0.25;//15;
+  ModelViewWithLighting::lightStrengths[1] = 0.25;//15;
+  ModelViewWithLighting::lightStrengths[2] = 1.25;//15;
   
   
   //firepit1
@@ -76,8 +85,8 @@ ModelViewWithLighting::ModelViewWithLighting()
   ModelViewWithLighting::lightSources[7] = 1; // 0= directional, 1 = local
   
   ModelViewWithLighting::lightStrengths[3] = 10.00;//15;
-  ModelViewWithLighting::lightStrengths[4] = 0.95;//15;
-  ModelViewWithLighting::lightStrengths[5] = 0.95;//15;
+  ModelViewWithLighting::lightStrengths[4] = 0.5;//15;
+  ModelViewWithLighting::lightStrengths[5] = 0.5;//15;
   
   //firepit2
   ModelViewWithLighting::lightSources[8] = -35;
@@ -156,7 +165,7 @@ void ModelViewWithLighting::addToGlobalRotationDegrees(double rx, double ry, dou
 {
   globalRX +=rx;
   globalRY += ry;
-	dynamic_view = cryph::Matrix4x4::xRotationDegrees(globalRY) * cryph::Matrix4x4::yRotationDegrees(globalRX);//*dynamic_view;
+	dynamic_view =  cryph::Matrix4x4::xRotationDegrees(globalRY) * cryph::Matrix4x4::yRotationDegrees(globalRX) ;//*dynamic_view;
 	// TODO: 1. UPDATE dynamic_view
 	// TODO: 2. Use dynamic_view in ModelView::getMatrices
 }
@@ -167,6 +176,7 @@ void ModelViewWithLighting::letThereBeLight(float ka[3],float kd[3], float ks[3]
 //   ModelViewWithLighting::numberOfLightSources = 3;
 //   
 //    int numLights = ModelViewWithLighting::numberOfLightSources;
+  
    glUniform4fv(uLoc_p_ecLightPos, ModelViewWithLighting::numberOfLightSources, ModelViewWithLighting::lightSources);
    glUniform3fv(uLoc_lightStrength, ModelViewWithLighting::numberOfLightSources, ModelViewWithLighting::lightStrengths);
    glUniform1i(ModelViewWithLighting::uLoc_actualNumLights, ModelViewWithLighting::numberOfLightSources);

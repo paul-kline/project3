@@ -84,21 +84,37 @@ float frand(float L, float H){
  return  L + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(H-L)));
   
 }
-void makeGrassField(Block* ground, Controller* c){
+bool isUnderModelView(float x, float z, ModelView* mv){
+  double xyz[6];
+  mv->getMCBoundingBox(xyz);
+ // std::cout <<"BOUNDING BOX: " << xyz[0] << ", " << xyz[1] << ", " << xyz[2] << ", " << xyz[3] <<"\n\n";
+  return (x>xyz[0] && x<xyz[1] && z>xyz[4] && z < xyz[5]); 
+}
+void makeGrassField(Block* ground, Controller* c, ModelView* avoid1, ModelView* avoid2, ModelView* avoid3, ModelView* avoid4){
   float forestGreen[3] = {0.133333, 0.545098, 0.133333}; //forest green
   float darkGreen[3] = {0.000, 0.392, 0.000}; // dark green
   
   cryph::AffPoint topLeftCorner = ground->frontLeftBottomCorner + ground->height*cryph::AffVector(0,1,0);
   float spacing = ground->width / 100;
   
-  int numGrasses = 9000;
+  int numGrasses = 8000;
   cryph::AffVector toRight = ground->frontRightBottomCorner - ground->frontLeftBottomCorner;
   toRight.normalize();
   cryph::AffVector toBack = ground->getTowardsBackUnitVec();
   for(int i =0; i < numGrasses; i++){
    float r = frand(0,1);
-   float r2 = frand(0,1);
+   float r2 = frand(0,1);  
    cryph::AffPoint bottomCenter = topLeftCorner + r*ground->length* (toBack) + r2*ground->width*toRight;
+   while(isUnderModelView(bottomCenter.x, bottomCenter.y, avoid1) ||
+         isUnderModelView(bottomCenter.x, bottomCenter.y, avoid2) ||
+	 isUnderModelView(bottomCenter.x, bottomCenter.y, avoid3) ||
+	 isUnderModelView(bottomCenter.x, bottomCenter.y, avoid4)
+        ){
+    r = frand(0,1);
+    r2 = frand(0,1);
+    bottomCenter = topLeftCorner + r*ground->length* (toBack) + r2*ground->width*toRight;
+       
+   }
     // 	:GrassBlade(int num_points_,
 // 		       cryph::AffPoint bottom_, float baseWidth_, cryph::AffVector baseDirection_,
 // 		       cryph::AffVector upV_, cryph::AffVector outV_, float upDistance_, float outDistance_, 
@@ -107,15 +123,15 @@ void makeGrassField(Block* ground, Controller* c){
    float nump = 20; 
    float green[3] = {0.133333, 0.545098, 0.133333};
    int attenuation = 3;
-   float radianss = frand(0,1); //between 0 and 1;
+   float radianss = frand(0,1.2); //between 0 and 1;
    
-   float baseWidth = frand(1,8);//float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+   float baseWidth = frand(0.5,3);//float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
 	
 	cryph::AffVector baseDir( frand(-1,1), 0, frand(-1,1) );
 	
-	cryph::AffVector upv( frand(-1,1),1, frand(-1,1) );
+	cryph::AffVector upv( frand(-0.3,0.3),1, frand(-0.3,0.3) );
 	cryph::AffVector outv( frand(-1,1) , 0 , frand(-1,1) );  
-	float up = frand(1,10);
+	float up = frand(3,9); // from 10
 	float out = frand(up/12, up/2);
 	float shade = frand(0,1);
 	float randomShade[3] = {shade*forestGreen[0], shade*forestGreen[1], shade*forestGreen[2]};
@@ -162,7 +178,7 @@ int main(int argc, char* argv[])
 	
 	//begin real project stuff;
 	// base block ;
-	float groundColor[3] = {0.000, 0.392, 0.000}; // dark green {1,1,1};//
+	float groundColor[3] = {0.0, 0.392,0.0}; // dark green {1,1,1};//392
 	Block ground(1,200, 500, cryph::AffVector(0,1,0), cryph::AffPoint(-100,-1,100) ,cryph::AffPoint(100,-1,100), groundColor);
 	c.addModel(&ground);
 	
@@ -182,7 +198,7 @@ int main(int argc, char* argv[])
 	}
 	Block building(buildingHeight,buildingWidth, buildingLength, buildingUpVector, buildingFrontLeft ,buildingFrontRight, buildingColor);
 	c.addModel(&building);
-	
+// 	
 	cryph::AffPoint stairsBackCenter = (buildingFrontLeft + buildingFrontRight) /2;
 	float stairWidthPercentOfBuildingFront = 0.70;
 	float stairWidth = stairWidthPercentOfBuildingFront * buildingWidth;
@@ -248,7 +264,7 @@ int main(int argc, char* argv[])
 	SuperFancyColumn rightColumn(columnHeight,columnWidth , rightColLeftPoint  , buildingUpVector, buildingFrontRight-buildingFrontLeft, gold, 10);
 	c.addModel(&leftColumn);
 	c.addModel(&rightColumn);
-	
+// 	
 	float heightSoFar = buildingHeight+columnHeight;
 	
 	//building(buildingHeight,buildingWidth, buildingLength, buildingUpVector, buildingFrontLeft ,buildingFrontRight, buildingColor);
@@ -276,8 +292,8 @@ int main(int argc, char* argv[])
 	cryph::AffPoint middleInsertRightSide = insertRigthSideLeftPoint + (heightSoFar - (insertMiddleHeight+ buildingHeight))*buildingUpVector;
 	Block insertMiddleBlock(insertMiddleHeight,insertMiddleWidth, insertLength, buildingUpVector, middleInsertLeftSide ,middleInsertRightSide, buildingColor);
 	c.addModel(&insertMiddleBlock);
-	
-	
+// 	
+// 	
 	//black doorway
 	float doorHeight = heightSoFar - (insertMiddleHeight + buildingHeight);
 	float doorWidth = insertMiddleWidth;
@@ -322,21 +338,21 @@ int main(int argc, char* argv[])
 	Stairs decorativeStairs4(decStairEachHeight,decorativeStairWidth, decorativeStairLength, buildingUpVector, decStairFrontRight_Left ,decStairFrontRight_Right, white,
 	  eachDecStairWidth, decStairNum, true);
 	c.addModel(&decorativeStairs4);
-	
-	
-	
-	//flat roof
+// 	
+// 	
+// 	
+// 	//flat roof
 	float roofHeight = mainBuilding.height * (1.0/13.0);
 	float roofLength = mainBuilding.length + building.length;
 	Block roof(roofHeight, buildingWidth,roofLength, buildingUpVector, building.frontLeftBottomCorner + (heightSoFar*buildingUpVector), building.frontRightBottomCorner + (heightSoFar*buildingUpVector), burlywood);
 	c.addModel(&roof);
-	glClearColor(0.0, 0.0, 0.0, 0.50);
-
-	
-	
-	
-	
-	//place cones on roof
+ 	glClearColor(0.0, 0.0, 0.0, 0.50);
+// 
+// 	
+// 	
+// 	
+// 	
+// 	//place cones on roof
 	int numAlongTopLength = 20;
 	float spacing = roofLength* (1.0/(numAlongTopLength + (numAlongTopLength -1))); //same size for the thing and the space between it and width!. 
 	float coneHeight = mainBuilding.height/15;
@@ -453,10 +469,10 @@ int main(int argc, char* argv[])
 	  
 	}
 	
-	//repeat along back
-	//reset the direction
-	
-	//move the starting point.
+// 	//repeat along back
+// 	//reset the direction
+// 	
+// 	//move the starting point.
 	firstConeCenter+= (roofLength-newSpacing)*mainBuilding.getTowardsBackUnitVec();
 	for(int i=0; i<newNumToFit; i++){
 	  float newx;
@@ -485,22 +501,9 @@ int main(int argc, char* argv[])
 	  
 	  
 	}
-	//Grass
-	cryph::AffPoint gbot =cryph::AffPoint(45,40,20); //firstConeCenter + (cryph::AffVector(0,20,0)) + cryph::AffVector(0,0,200);
-	
-	int attenuation = 3;
-// 	:GrassBlade(int num_points_,
-// 		       cryph::AffPoint bottom_, float baseWidth_, cryph::AffVector baseDirection_,
-// 		       cryph::AffVector upV_, cryph::AffVector outV_, float upDistance_, float outDistance_, 
-// 		       float colorT_[3],float colorB_[3], 
-// 		       int attenuationCurveCode_,float totalTorque_, int torqueApplicationFunctionCode_ ){
-	float nump = 20; float basewidth = 20; float up = 70; float out = 10; float radianss = 0;//3.14592/2.5;
-	float green[3] = {0.133333, 0.545098, 0.133333};
-	GrassBlade* grassblade = new GrassBlade(nump, gbot, basewidth, cryph::AffVector(0,0,1), cryph::AffVector(0,1,0), cryph::AffVector(1,0,0), up, out, green, gold, attenuation, radianss, 2);
-	c.addModel(grassblade);
-	makeGrassField(&ground, &c);
-	
-	//make a firepit
+// 	
+// 	
+// 	//make a firepit
 	cryph::AffPoint stairsCenter = (stairs.frontRightBottomCorner-stairs.frontLeftBottomCorner)/2;
 	//move foward some
 	cryph::AffPoint firePitCenter = stairsCenter - mainBuilding.getTowardsBackUnitVec()*buildingLength*2;
@@ -511,22 +514,39 @@ int main(int argc, char* argv[])
 	//float height_, float width_, cryph::AffPoint bottomLeft_,cryph::AffVector upVector_, cryph::AffVector toRightFrontVector_,float color_[3], int numFancies_){
 	FirePit firepit(buildingHeight*1.2, firePitWidth, firePitLeft, buildingUpVector, firePitRight-firePitLeft, burlywood, 12);
 	  c.addModel(&firepit);
-	
-	
-	//other firepit
+// 	
+// 	
+// 	//other firepit
 	cryph::AffPoint otherFireLeftPoint = firePitRight + v*(buildingWidth);
 	cryph::AffPoint otherFireRightPoint = otherFireLeftPoint + (-v)*firePitWidth;
 	FirePit firepit2(buildingHeight*1.2, firePitWidth, otherFireLeftPoint, buildingUpVector, firePitRight-firePitLeft, burlywood, 12);
 	  c.addModel(&firepit2);
-	  std::cout << "FIREPIT2: "<< firepit2.fancyColumn.top << "\n\n";
-	  std::cout << "FIREPIT1: "<< firepit.fancyColumn.top << "\n\n";
-	
-	double xyz[6];
-	c.getOverallMCBoundingBox(xyz);
-	std::cout << "TOTAL  bounds: " << xyz[0] << ", " << xyz[1] <<", " <<  xyz[2] << ", " << xyz[3] <<", " <<   xyz[4] << ", " << xyz[5] << "\n\ndone!";
-	set3DViewingInformation(xyz);
-
-	
+// 	  std::cout << "FIREPIT2: "<< firepit2.fancyColumn.top << "\n\n";
+// 	  std::cout << "FIREPIT1: "<< firepit.fancyColumn.top << "\n\n";
+// 	
+ 	double xyz[6];
+ 	c.getOverallMCBoundingBox(xyz);
+// 	std::cout << "TOTAL  bounds: " << xyz[0] << ", " << xyz[1] <<", " <<  xyz[2] << ", " << xyz[3] <<", " <<   xyz[4] << ", " << xyz[5] << "\n\ndone!";
+ 	set3DViewingInformation(xyz);
+// 
+// 	
+// 	//Grass
+ 	cryph::AffPoint gbot =cryph::AffPoint(45,40,20); //firstConeCenter + (cryph::AffVector(0,20,0)) + cryph::AffVector(0,0,200);
+// 	
+	int attenuation = 3;
+// 	:GrassBlade(int num_points_,
+// 		       cryph::AffPoint bottom_, float baseWidth_, cryph::AffVector baseDirection_,
+// 		       cryph::AffVector upV_, cryph::AffVector outV_, float upDistance_, float outDistance_, 
+// 		       float colorT_[3],float colorB_[3], 
+// 		       int attenuationCurveCode_,float totalTorque_, int torqueApplicationFunctionCode_ ){
+	float nump = 20; float basewidth = 20; float up = 70; float out = 10; float radianss = 1;//3.14592/2.5;
+	float green[3] = {0.133333, 0.545098, 0.133333};
+	//GrassBlade* grassblade = new GrassBlade(nump, gbot, basewidth, cryph::AffVector(0,0,1), cryph::AffVector(0,1,0), cryph::AffVector(1,0,0), up, out, green, gold, attenuation, radianss, 2);
+	//c.addModel(grassblade);
+ 	makeGrassField(&ground, &c, &mainBuilding, &firepit,&firepit2,&stairs);
+// 	
+// 	
+// 	
 	
 	
 	c.run();

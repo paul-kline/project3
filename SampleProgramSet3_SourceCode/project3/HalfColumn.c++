@@ -227,7 +227,10 @@ void HalfColumn::render()
 	float mat[16];
 	glUniformMatrix4fv(ppuLoc_mc_ec, 1, false, mc_ec.extractColMajor(mat));
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
-	ModelViewWithLighting::letThereBeLight(color, color,color,22);
+	if(!lightingModelLocked){
+	    ModelViewWithLighting::letThereBeLight(color, color,color,50);	  	  
+	}
+
 	
 
 	if (displayCylFill)

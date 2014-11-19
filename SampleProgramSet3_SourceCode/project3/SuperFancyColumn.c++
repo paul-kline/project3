@@ -4,15 +4,16 @@
 #include "ShaderIF.h"
 #include <cmath>
 #include <algorithm> 
+//#include "MyController.h"
 #include "GLFWController.h"
 #include "HalfColumn.h"
 #include "Block.h"
-
+#include "ModelViewWithLighting.h"
 
 
   
 
-
+   
 
 SuperFancyColumn::SuperFancyColumn(float height_, float width_, cryph::AffPoint bottomLeft_,cryph::AffVector upVector_, cryph::AffVector toRightFrontVector_,float color_[3], int numFancies_){
 
@@ -36,10 +37,14 @@ SuperFancyColumn::SuperFancyColumn(float height_, float width_, cryph::AffPoint 
   
   
   
+  
+  
+  
 };
 
 SuperFancyColumn::~SuperFancyColumn()
 {
+  
   delete &baseBlock;
   delete &topBlock;// bufferColumn->render();
   delete &lowerColumn;// lowerColumn.render();
@@ -106,12 +111,23 @@ void SuperFancyColumn::defineSuperFancyColumn()
 
 void SuperFancyColumn::render()
 {
+
+//   bool ichanged = false;
+//   if(!lightingModelLocked){
+//    ModelViewWithLighting::letThereBeLight(goldka,goldkd,goldks,goldm); 
+//     ichanged=true;
+//     lightingModelLocked = true;
+//   }
+  //ModelViewWithLighting::letThereBeLight(goldka,goldkd,goldks,goldm); 
   baseBlock.render();
   topBlock.render();
   lowerColumn.render();
   topColumn.render();
   fancyColumn.render();
-  
+//   if(ichanged){
+//    lightingModelLocked= false; 
+//     
+//   }
   
   
 }

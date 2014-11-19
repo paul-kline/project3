@@ -268,8 +268,10 @@ void GrassBlade::render()
 	glUniformMatrix4fv(ppuLoc_mc_ec, 1, false, mc_ec.extractColMajor(mat));
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
 
-	ModelViewWithLighting::letThereBeLight(colorT,colorT,colorT,20);
-
+	if(!lightingModelLocked){
+	    ModelViewWithLighting::letThereBeLight(colorT,colorT,colorT,20);
+	}
+	
 	if (true)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

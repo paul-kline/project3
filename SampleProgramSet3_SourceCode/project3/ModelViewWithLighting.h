@@ -36,6 +36,13 @@ public:
 	static float lightStrengths[20 * 3]; //also 20.
 	static float ambientStrength[3];
 	
+	static bool lightingModelLocked;
+	
+	static float goldka[3];
+	static float goldkd[3];
+	static float goldks[3];
+	const static float goldm;// = 83.2;
+
 	
 	
 	//void getMCBoundingBox(double* xyzLimits) const;

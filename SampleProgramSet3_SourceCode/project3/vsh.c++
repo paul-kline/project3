@@ -75,7 +75,7 @@ vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 	}
   
 	
-    vec3 theColor = ka * ambientStrength; //kd = ka
+    vec3 theColor = ka * ambientStrength; //kd = ka typically anyways
   
 	for(int i = 0; i < actualNumLights; i++){
 	 

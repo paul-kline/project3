@@ -305,8 +305,11 @@ void Block::render()
 	glUniformMatrix4fv(ppuLoc_mc_ec, 1, false, mc_ec.extractColMajor(mat));
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
 
-	ModelViewWithLighting::letThereBeLight(color,color,color,20);
-
+	//
+	if(!lightingModelLocked){
+	  ModelViewWithLighting::letThereBeLight(color,color,color,40);//ModelViewWithLighting::letThereBeLight(goldka,goldkd,goldks,goldm); 
+	}
+         
 	if (displayCylFill2)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
