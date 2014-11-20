@@ -97,7 +97,7 @@ void makeGrassField(Block* ground, Controller* c, ModelView* avoid1, ModelView* 
   cryph::AffPoint topLeftCorner = ground->frontLeftBottomCorner + ground->height*cryph::AffVector(0,1,0);
   float spacing = ground->width / 100;
   
-  int numGrasses = 8000;
+  int numGrasses = 8500;
   cryph::AffVector toRight = ground->frontRightBottomCorner - ground->frontLeftBottomCorner;
   toRight.normalize();
   cryph::AffVector toBack = ground->getTowardsBackUnitVec();
@@ -105,10 +105,10 @@ void makeGrassField(Block* ground, Controller* c, ModelView* avoid1, ModelView* 
    float r = frand(0,1);
    float r2 = frand(0,1);  
    cryph::AffPoint bottomCenter = topLeftCorner + r*ground->length* (toBack) + r2*ground->width*toRight;
-   while(isUnderModelView(bottomCenter.x, bottomCenter.y, avoid1) ||
-         isUnderModelView(bottomCenter.x, bottomCenter.y, avoid2) ||
-	 isUnderModelView(bottomCenter.x, bottomCenter.y, avoid3) ||
-	 isUnderModelView(bottomCenter.x, bottomCenter.y, avoid4)
+   while(isUnderModelView(bottomCenter.x, bottomCenter.z, avoid1) ||
+         isUnderModelView(bottomCenter.x, bottomCenter.z, avoid2) ||
+	 isUnderModelView(bottomCenter.x, bottomCenter.z, avoid3) ||
+	 isUnderModelView(bottomCenter.x, bottomCenter.z, avoid4)
         ){
     r = frand(0,1);
     r2 = frand(0,1);
@@ -122,7 +122,7 @@ void makeGrassField(Block* ground, Controller* c, ModelView* avoid1, ModelView* 
 // 		       int attenuationCurveCode_,float totalTorque_, int torqueApplicationFunctionCode_ ){
    float nump = 20; 
    float green[3] = {0.133333, 0.545098, 0.133333};
-   int attenuation = 3;
+   
    float radianss = frand(0,1.2); //between 0 and 1;
    
    float baseWidth = frand(0.5,3);//float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
@@ -133,9 +133,11 @@ void makeGrassField(Block* ground, Controller* c, ModelView* avoid1, ModelView* 
 	cryph::AffVector outv( frand(-1,1) , 0 , frand(-1,1) );  
 	float up = frand(3,9); // from 10
 	float out = frand(up/12, up/2);
-	float shade = frand(0,1);
+	float shade = frand(0,1.5);
 	float randomShade[3] = {shade*forestGreen[0], shade*forestGreen[1], shade*forestGreen[2]};
-	GrassBlade* grassblade = new GrassBlade(nump, bottomCenter, baseWidth, baseDir, upv, outv, up, out, randomShade, randomShade, attenuation, radianss, 2);
+	int radialAttenuationFunction = (frand(0,1)<0.5)? 2 : 3;
+	int attenuation = (frand(0,1)<0.5)? 2 : 3;
+	GrassBlade* grassblade = new GrassBlade(nump, bottomCenter, baseWidth, baseDir, upv, outv, up, out, randomShade, randomShade, attenuation, radianss, radialAttenuationFunction);
 	c->addModel(grassblade);
    
     
@@ -539,11 +541,11 @@ int main(int argc, char* argv[])
 // 		       cryph::AffVector upV_, cryph::AffVector outV_, float upDistance_, float outDistance_, 
 // 		       float colorT_[3],float colorB_[3], 
 // 		       int attenuationCurveCode_,float totalTorque_, int torqueApplicationFunctionCode_ ){
-	float nump = 20; float basewidth = 20; float up = 70; float out = 10; float radianss = 1;//3.14592/2.5;
+	float nump = 20; float basewidth = 20; float up = 110; float out = 100; float radianss = 3.14592/2.5;
 	float green[3] = {0.133333, 0.545098, 0.133333};
-	//GrassBlade* grassblade = new GrassBlade(nump, gbot, basewidth, cryph::AffVector(0,0,1), cryph::AffVector(0,1,0), cryph::AffVector(1,0,0), up, out, green, gold, attenuation, radianss, 2);
+	//GrassBlade* grassblade = new GrassBlade(nump, gbot, basewidth, cryph::AffVector(0,0,1), cryph::AffVector(0,1,0), cryph::AffVector(1,0,0), up, out, green, gold, attenuation, radianss, 1);
 	//c.addModel(grassblade);
- 	makeGrassField(&ground, &c, &mainBuilding, &firepit,&firepit2,&stairs);
+ 	makeGrassField(&ground, &c, &mainBuilding, &(firepit.baseBlock),&(firepit2.baseBlock),&stairs);
 // 	
 // 	
 // 	

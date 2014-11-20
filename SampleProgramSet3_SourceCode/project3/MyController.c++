@@ -71,7 +71,7 @@ void MyController::handleScroll(bool up)
   float value = 0.2;
   value *= (up)? 1 : -1 ;
   ModelView::addToGlobalZoom(value);
-  std::cout << "Adding to global zoom";
+ // std::cout << "Adding to global zoom";
 }
 
 void MyController::handleAsciiChar(unsigned char theChar, int x, int y)
