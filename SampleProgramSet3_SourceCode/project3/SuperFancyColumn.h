@@ -19,11 +19,11 @@ public:
 	float width;
 	float color[3];
 	float myBounds[6];
-	Block topBlock;
-	Column topColumn;
-	FancyColumn fancyColumn;
-	Column lowerColumn;
-	Block baseBlock;
+	Block* topBlock;
+	Column* topColumn;
+	FancyColumn* fancyColumn;
+	Column* lowerColumn;
+	Block* baseBlock;
 	void render();
 	cryph::AffPoint bottomLeft;
 	cryph::AffVector upVector;

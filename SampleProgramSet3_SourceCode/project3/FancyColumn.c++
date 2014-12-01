@@ -48,9 +48,9 @@ FancyColumn::FancyColumn(cryph::AffPoint bottom_, float bradius_, cryph::AffPoin
 FancyColumn::~FancyColumn()
 {
 
-  for(int i =0; i< numCircs; i++){
-   delete &halfColumns[i]; 
-  }
+//   for(int i =0; i< numCircs; i++){
+//    delete &halfColumns[i]; 
+//   }
   //delete halfColumns;
 }
 
@@ -106,14 +106,14 @@ void FancyColumn::defineFancyColumn()
 
 		//normals[j][0] = perp_b.dx; normals[j][1] = perp_b.dy; normals[j][2] = perp_b.dz;
 		//coords[j][0] = currpoint_b.x; coords[j][1] = currpoint_b.y; coords[j][2] = currpoint_b.z;
-		bpoints[i] = &(*(new cryph::AffPoint(currpoint_b.x,currpoint_b.y, currpoint_b.z))); //this is ridiculous. 
-		tpoints[i]=&(*(new cryph::AffPoint(currpoint_t.x,currpoint_t.y,currpoint_t.z))); //this is ridiculous. 
+		bpoints[i] = new cryph::AffPoint(currpoint_b.x,currpoint_b.y, currpoint_b.z); //this is ridiculous. 
+		tpoints[i]= new cryph::AffPoint(currpoint_t.x,currpoint_t.y,currpoint_t.z); //this is ridiculous. 
 		
 		
-		if(i<2){
-		  std::cout << "currpointb[i]: " << currpoint_b.x << currpoint_b.y << currpoint_b.z << "\n";
-		  
-		}
+// 		if(i<2){
+// 		  std::cout << "currpointb[i]: " << currpoint_b.x << currpoint_b.y << currpoint_b.z << "\n";
+// 		  
+// 		}
 		//otherside
 		//normals[j+1][0] = perp_b.dx; normals[j+1][1] = perp_b.dy; normals[j+1][2] = perp_b.dz;
 		//coords[j+1][0] = currpoint_t.x; coords[j+1][1] = currpoint_t.y; coords[j+1][2] =currpoint_t.z;
@@ -158,7 +158,7 @@ void FancyColumn::defineFancyColumn()
 	 float radians = M_PI - 2*dTheta; //total 'spanage' of each little halfy column thingy. This is much more clear if you make a picture. Isosolese triangles with 'r' sides.
 	 float bRadius = (*bpoints[0] - *bpoints[1]).length();
 	 float tRadius = (*tpoints[0] - *tpoints[1]).length();
-	  std::cout << "bradius: " << bRadius << " tradius: " << tRadius << "\n\n\n";
+	 // std::cout << "bradius: " << bRadius << " tradius: " << tRadius << "\n\n\n";
 // 	  std::cout << "bpoints[0]: " << (*bpoints[0]).x << (*bpoints[0]).y << (*bpoints[0]).z << "\n";
 // 	   std::cout << "bpoints[1]: " << (*bpoints[1]).x << (*bpoints[1]).y << (*bpoints[1]).z << "\n";
 // 	  std::cout << "bpoints[2]: " << (*bpoints[2]).x << (*bpoints[2]).y << (*bpoints[2]).z << "\n";
@@ -209,12 +209,19 @@ void FancyColumn::defineFancyColumn()
 	    HalfColumn* halfColumn = new HalfColumn( *bcenter_P, bRadius, *tcenter_P,tRadius,color,capped,true, radians ,*botherPoint_P);
 	    
 	    halfColumns[HalfColCounter++] = *halfColumn;
-	    double bounds[6];c->addModel(halfColumn);
+	    double bounds[6];c->addModel(&halfColumns[HalfColCounter-1]);
+// 	    delete halfColumn; //doesn't work black screen.
+	    
+	    
 	    //column1.getMCBoundingBox(bounds);
  	    
 	  
 	}
-	
+	for (int i=0 ; i<numPoints ; i++)
+	{
+	delete tpoints[i];
+	delete bpoints[i];
+	}
 	
 /*	
 	glGenVertexArrays(1, vao);

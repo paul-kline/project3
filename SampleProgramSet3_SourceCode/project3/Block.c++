@@ -336,7 +336,7 @@ float Block::getHeight(){
 cryph::AffVector Block::getTowardsBackUnitVec(){
   cryph::AffVector t = up.cross(frontRightBottomCorner-frontLeftBottomCorner);
   t.normalize();
-  return (*(new cryph::AffVector(t.dx, t.dy,t.dz)));
+  return cryph::AffVector(t.dx, t.dy,t.dz);//(*(new cryph::AffVector(t.dx, t.dy,t.dz)));
   
 }
 

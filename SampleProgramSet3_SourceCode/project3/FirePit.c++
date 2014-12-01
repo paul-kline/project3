@@ -39,11 +39,11 @@ FirePit::FirePit(float height_, float width_, cryph::AffPoint bottomLeft_,cryph:
 
 FirePit::~FirePit()
 {
-  delete &baseBlock;
-  delete &bufferColumn;// bufferColumn->render();
-  delete &lowerColumn;// lowerColumn.render();
-  delete &topColumn;// topColumn.render();
-  delete &fancyColumn;// fancyColumn.render();
+//   delete &baseBlock;
+   delete bufferColumn;// bufferColumn->render();
+//   delete &lowerColumn;// lowerColumn.render();
+//   delete &topColumn;// topColumn.render();
+//   delete &fancyColumn;// fancyColumn.render();
   
 }
 
@@ -63,7 +63,7 @@ void FirePit::defineFirePit()
   
   
   //Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_)
-  baseBlock = *(new Block(blockHeight, blockWidth,blockWidth, upVector, bottomLeft, bottomLeft + (blockWidth*toRightFrontVector),color));
+  baseBlock = Block(blockHeight, blockWidth,blockWidth, upVector, bottomLeft, bottomLeft + (blockWidth*toRightFrontVector),color);
   
 //   cryph::AffPoint secondBottomLeft = (bottomLeft + (upVector* (height - blockHeight)));
 //   cryph::AffPoint secondBottomRight = secondBottomLeft + (blockWidth*toRightFrontVector);
@@ -79,7 +79,7 @@ void FirePit::defineFirePit()
     float smallerRadius = 0.80 * leadingcolRadius; //lets try 80% of the big one.
     float leadingcolHeight = leadingColumnHeightPercentage*height;
     
-  lowerColumn= *(new Column(lowercolumnbottom, leadingcolRadius, (lowercolumnbottom + (leadingcolHeight*upVector)), smallerRadius, color, true));
+  lowerColumn=Column(lowercolumnbottom, leadingcolRadius, (lowercolumnbottom + (leadingcolHeight*upVector)), smallerRadius, color, true);
   
   
   float bigRadius = blockWidth;
@@ -89,7 +89,7 @@ void FirePit::defineFirePit()
   //so it can hold something
   bufferColumn = (new Column(topColumnBottom ,leadingcolRadius , topColumnBottom+ (0.1*upVector) ,leadingcolRadius  ,color,true));
   
-  topColumn = *(new Column(topColumnBottom ,leadingcolRadius , topColumnBottom+ (bowlHeight*upVector) ,bigRadius  ,color,false));
+  topColumn = Column(topColumnBottom ,leadingcolRadius , topColumnBottom+ (bowlHeight*upVector) ,bigRadius  ,color,false);
   
   
   //FancyColumn(cryph::AffPoint bottom_, float bradius_, cryph::AffPoint top_, float tradius_, float color_[3], bool capped_, int numCircs_){

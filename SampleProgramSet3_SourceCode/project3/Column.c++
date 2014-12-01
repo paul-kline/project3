@@ -78,7 +78,7 @@ void Column::defineColumn()
 	
 	cryph::AffVector currVToPoint = defineStarter(); //starter is unit vector.
 	//std::cout << "direction vector: " << direction.dx << ", " << direction.dy << ", " << direction.dz << "\n";
-	std::cout << "starter vector: " << currVToPoint.dx << ", " << currVToPoint.dy << ", " << currVToPoint.dz << "\n";
+	//std::cout << "starter vector: " << currVToPoint.dx << ", " << currVToPoint.dy << ", " << currVToPoint.dz << "\n";
 	cryph::AffVector mvDir = direction.cross(currVToPoint);
 	cryph::AffPoint currpoint_b = bottom + bradius*currVToPoint;
 	cryph::AffPoint currpoint_t = top + tradius*currVToPoint;
