@@ -15,7 +15,7 @@ typedef float vec3[3];
 bool displayCylEdges3 = false;
 bool displayCylFill3=true;
 float black3[] = { 0.0, 0.0, 0.0 };
-Block* blocks;
+//Block* blocks;
 
 
 //default constructor;
@@ -84,9 +84,14 @@ Stairs::Stairs(float height_, float width_, float length_, cryph::AffVector norm
 
 Stairs::~Stairs()
 {
-  for(int i=0; i< numStairs; i++){
-    delete &blocks[i];  
+//   for(int i=0; i< numStairs; i++){
+//     delete &blocks[i];  
+//     
+//   }
+  if(blocks != NULL){
     
+    delete [] blocks;
+    blocks = NULL;
   }
 }
 
@@ -121,8 +126,8 @@ void Stairs::defineStairs()
   
       int i;
       for(i=0; i< numStairs; i++){
-	Block block(height,width, length, mainNormal,leftPoint,rightPoint,color);
-	blocks[i] = block;
+	//Block block(height,width, length, mainNormal,leftPoint,rightPoint,color);
+	blocks[i] = Block(height,width, length, mainNormal,leftPoint,rightPoint,color);//block;
 	//height same.
 	//wdith shrunk by 2*step size
 	width-=(2*stepWidth);

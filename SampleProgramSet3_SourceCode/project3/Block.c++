@@ -104,6 +104,10 @@ Block::Block(float height_, float width_, float length_, cryph::AffVector normal
 
 Block::~Block()
 {
+//   if(coords != NULL){
+//    delete coords;
+//   coords = NULL;
+//   }
 }
 
 // xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}

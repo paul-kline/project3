@@ -24,15 +24,16 @@ public:
 	int   numStairs;
 	bool flatBack;
 	cryph::AffVector mainNormal;
-	vec3* coords;
+	//vec3* coords;
 	cryph::AffPoint frontLeftBottomCorner;
 	cryph::AffPoint frontRightBottomCorner;
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 	void getMCBoundingBox(double* xyzLimitsF) const;
 	void render();
+	Block* blocks;
 private:
   
-	Block* blocks;
+	
 
 
 	cryph::AffVector widthVector;

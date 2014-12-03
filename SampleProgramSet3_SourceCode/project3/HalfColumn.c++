@@ -57,8 +57,8 @@ HalfColumn::HalfColumn(cryph::AffPoint bottom_,float bradius_, cryph::AffPoint t
 
 HalfColumn::~HalfColumn()
 {
-  delete[] topCap;
-  delete[] bottomCap;
+  //delete[] topCap;
+  //delete[] bottomCap; unneccarry. 
 }
 
 // xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
