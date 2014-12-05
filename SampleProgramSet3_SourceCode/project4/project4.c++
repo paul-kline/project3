@@ -198,7 +198,7 @@ int main(int argc, char* argv[])
 	    v1*=buildingWidth;
 	    buildingFrontRight = buildingFrontLeft + v1;
 	}
-	Block building(buildingHeight,buildingWidth, buildingLength, buildingUpVector, buildingFrontLeft ,buildingFrontRight, buildingColor,-1,1);
+	Block building(buildingHeight,buildingWidth, buildingLength, buildingUpVector, buildingFrontLeft ,buildingFrontRight, buildingColor,1,1);
 	c.addModel(&building);
 	
 	cryph::AffPoint stairsBackCenter = (buildingFrontLeft + buildingFrontRight) /2;
@@ -346,7 +346,7 @@ int main(int argc, char* argv[])
 	//flat roof
 	float roofHeight = mainBuilding.height * (1.0/13.0);
 	float roofLength = mainBuilding.length + building.length;
-	Block roof(roofHeight, buildingWidth,roofLength, buildingUpVector, building.frontLeftBottomCorner + (heightSoFar*buildingUpVector), building.frontRightBottomCorner + (heightSoFar*buildingUpVector), burlywood,-1,-1);
+	Block roof(roofHeight, buildingWidth,roofLength, buildingUpVector, building.frontLeftBottomCorner + (heightSoFar*buildingUpVector), building.frontRightBottomCorner + (heightSoFar*buildingUpVector), burlywood,1,5); // 1,5= use stone texture, 5 means roof
 	c.addModel(&roof);
  	
 

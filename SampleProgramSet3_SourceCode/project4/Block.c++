@@ -290,6 +290,7 @@ void Block::renderBlock(vec3 color){
 	 temp[2]=2;
 	 temp[3]=5;
 	 
+	  glDisableVertexAttribArray(pvaLoc_texCoords);
 	 tempV = mainNormal;
 	 glVertexAttrib3f(pvaLoc_mcNormal, tempV.dx,tempV.dy,tempV.dz);
 	 glDrawElements(GL_TRIANGLE_FAN,4,GL_UNSIGNED_INT,  temp);
@@ -309,7 +310,9 @@ void Block::renderBlock(vec3 color){
 	 glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE+1),GL_UNSIGNED_INT,  topCap);
 	 glE*/
 	 glEnableVertexAttribArray(pvaLoc_mcNormal); //be nice and turn it back on if someone else forgets.
+	 glEnableVertexAttribArray(pvaLoc_texCoords);
 }
+
 
 
 
@@ -441,10 +444,10 @@ void Block::defineTextureCoordinates()
       break;
     
     case 1 : //front base thing
-//       width  = 1;
-//       height = 3;
-//       depth  = 5; 
-     break;
+      width  = 3;
+      height = 1;
+      depth  = 0.7; 
+      break;
     
     case 2 : //left of door
       width  = 1;
@@ -462,6 +465,12 @@ void Block::defineTextureCoordinates()
       width  = 1;
       height = 1;
       depth  = 0.1; 
+      break;
+    
+    case 5 : //roof
+      width  = 3;
+      height = 0.16;
+      depth  = 5; 
       break;
   
   default : //otherwise I don't know what to do with it and no texture should be drawn.
