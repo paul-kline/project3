@@ -43,14 +43,14 @@ frontLeftBottomCorner=cryph::AffPoint( 1,0,0);
 // setBounds();
 
 }
-Block::Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffVector toRightCorner_, vec3 color_, int whichTexture_){
+Block::Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffVector toRightCorner_, vec3 color_, int whichTexture_, int buildingPieceCode_){
 
  height=height_;
  width=width_;
  length=length_;
  
  whichTexture = whichTexture_;
- 
+ buildingPieceCode = buildingPieceCode_;
  mainNormal=normal_;
  mainNormal.normalize(); //just in case someone hadn't..
  
@@ -78,7 +78,7 @@ Block::Block(float height_, float width_, float length_, cryph::AffVector normal
   
 };
 
-Block::Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_, int whichTexture_){
+Block::Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_, int whichTexture_, int buildingPieceCode_){
 
  height=height_;
  width=width_;

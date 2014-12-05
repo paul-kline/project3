@@ -68,11 +68,11 @@ void SuperFancyColumn::defineSuperFancyColumn()
   
   
   //Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_)
-  baseBlock = (new Block(blockHeight, blockWidth,blockWidth, upVector, bottomLeft, bottomLeft + (blockWidth*toRightFrontVector),color, -1));
+  baseBlock = (new Block(blockHeight, blockWidth,blockWidth, upVector, bottomLeft, bottomLeft + (blockWidth*toRightFrontVector),color, -1,-1));
   
   cryph::AffPoint secondBottomLeft = (bottomLeft + (upVector* (height - blockHeight)));
   cryph::AffPoint secondBottomRight = secondBottomLeft + (blockWidth*toRightFrontVector);
-  topBlock = (new Block(blockHeight,blockWidth,blockWidth, upVector, secondBottomLeft,secondBottomRight,color,-1));
+  topBlock = (new Block(blockHeight,blockWidth,blockWidth, upVector, secondBottomLeft,secondBottomRight,color,-1,-1));
   
   //now the leader columns
   //Column(cryph::AffPoint bottom_, float bradius_, cryph::AffPoint top_, float tradius_, float color_[6], bool capped_)

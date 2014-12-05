@@ -9,7 +9,7 @@ in vec2 texCoordsToFS; // (s,t)
 
 vec4 blend(){
   vec4 texColor = texture(textureMap, texCoordsToFS);
-  float percentOriginalColor = .5;
+  float percentOriginalColor = 0.5;
   float percentTexture = 1 - percentOriginalColor;
   
   vec4 result;
@@ -19,7 +19,7 @@ vec4 blend(){
   result.y = percentOriginalColor*colorToFS.y + percentTexture*texColor.y;
   result.z = percentOriginalColor*colorToFS.z + percentTexture*texColor.z;
   
-  //fix the overflow!!
+  //fix the overflow!! if any..
 	float max =((result.x > result.y)? result.x : result.y);
 	max = (result.z > max)? result.z : max;
 	

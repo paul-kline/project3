@@ -63,7 +63,7 @@ void FirePit::defineFirePit()
   
   
   //Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_)
-  baseBlock = Block(blockHeight, blockWidth,blockWidth, upVector, bottomLeft, bottomLeft + (blockWidth*toRightFrontVector),color, -1);
+  baseBlock = Block(blockHeight, blockWidth,blockWidth, upVector, bottomLeft, bottomLeft + (blockWidth*toRightFrontVector),color, -1,-1);
   
 //   cryph::AffPoint secondBottomLeft = (bottomLeft + (upVector* (height - blockHeight)));
 //   cryph::AffPoint secondBottomRight = secondBottomLeft + (blockWidth*toRightFrontVector);

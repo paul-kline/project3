@@ -10,11 +10,12 @@ class Block : public ModelViewWithLighting
 public:
 	typedef float vec3[3];
 	Block();
-	Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffVector toRightCorner_, vec3 color_, int whichTexture_); //smarter constructor.
-	Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_, int whichTexture_);
+	Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffVector toRightCorner_, vec3 color_, int whichTexture_, int buildingPieceCode_); //smarter constructor.
+	Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_, int whichTexture_, int buildingPieceCode_);
 	virtual ~Block();
 
 	int whichTexture;
+	int buildingPieceCode;
 	float myBounds[6];
 	float color[3];
 	float height;

@@ -127,7 +127,7 @@ void Stairs::defineStairs()
       int i;
       for(i=0; i< numStairs; i++){
 	//Block block(height,width, length, mainNormal,leftPoint,rightPoint,color);
-	blocks[i] = Block(height,width, length, mainNormal,leftPoint,rightPoint,color, -1);//block;
+	blocks[i] = Block(height,width, length, mainNormal,leftPoint,rightPoint,color, -1,-1);//block;
 	//height same.
 	//wdith shrunk by 2*step size
 	width-=(2*stepWidth);
