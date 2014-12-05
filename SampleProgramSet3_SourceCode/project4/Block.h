@@ -56,6 +56,9 @@ private:
 	GLuint defineTexture();
 	double calculateMax(char axis);
 	double calculateMin(char axis);
+	
+	
+	void defineTextureCoordinates();
 };
 
 #endif

@@ -85,7 +85,7 @@ Block::Block(float height_, float width_, float length_, cryph::AffVector normal
  length=length_;
  
  whichTexture = whichTexture_;
- 
+ buildingPieceCode = buildingPieceCode_;
  mainNormal=normal_;
  mainNormal.normalize(); //just in case someone hadn't..
  
@@ -147,38 +147,12 @@ void Block::defineBlock()
 	glDisableVertexAttribArray(pvaLoc_mcNormal);
 		
 	
-	typedef float vec2[2];
-	vec2* textcoordsArray = new vec2[8];
-	textcoordsArray[0][0]=0; textcoordsArray[0][1]=0; //bottom left 
-	textcoordsArray[1][0]=0; textcoordsArray[1][1]=3; // top left
-	textcoordsArray[2][0]=1; textcoordsArray[2][1]=3; // top right
-	textcoordsArray[3][0]=1; textcoordsArray[3][1]=0; // bottom right
-	textcoordsArray[4][0]=-4; textcoordsArray[4][1]=0; // back bottom right
-	textcoordsArray[5][0]=-4; textcoordsArray[5][1]=3; // back top right
-	textcoordsArray[6][0]=-5; textcoordsArray[6][1]=3; // back top left
-	textcoordsArray[7][0]=-5; textcoordsArray[7][1]=0; // back bottom left
 	
-	if(whichTexture == 2){ // then this is a door.
-	  textcoordsArray[0][0]=0; textcoordsArray[0][1]=0; //bottom left 
-	textcoordsArray[1][0]=0; textcoordsArray[1][1]=1; // top left
-	textcoordsArray[2][0]=1; textcoordsArray[2][1]=1; // top right
-	textcoordsArray[3][0]=1; textcoordsArray[3][1]=0; // bottom right
-	textcoordsArray[4][0]=-4; textcoordsArray[4][1]=0; // back bottom right
-	textcoordsArray[5][0]=-4; textcoordsArray[5][1]=3; // back top right
-	textcoordsArray[6][0]=-5; textcoordsArray[6][1]=3; // back top left
-	textcoordsArray[7][0]=-5; textcoordsArray[7][1]=0; // back bottom left
-	  
-	  
-	  
-	}
 	
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glBufferData(GL_ARRAY_BUFFER, 8*sizeof(vec2), textcoordsArray, GL_DYNAMIC_DRAW);
-		
+	defineTextureCoordinates();
 	
-
-	glVertexAttribPointer(pvaLoc_texCoords, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(pvaLoc_texCoords);
+	  
+	
   
 }
 
@@ -441,6 +415,91 @@ GLuint Block::defineTexture()
   delete texImage; // all relevant information has been copied to OpenGL
 
   return locID[0];
+
+}
+void Block::defineTextureCoordinates()
+{
+  
+  
+    
+  typedef float vec2[2];  
+  vec2* textcoordsArray = new vec2[8];
+	
+	
+  
+  
+  float width;
+  float height;
+  float depth;
+  float zero;
+  zero=0;
+  switch ( buildingPieceCode ) {
+    case 0 : //main building
+      width  = 1;
+      height = 3;
+      depth  = 5; 
+      break;
+    
+    case 1 : //front base thing
+//       width  = 1;
+//       height = 3;
+//       depth  = 5; 
+     break;
+    
+    case 2 : //left of door
+      width  = 1;
+      height = 2;
+      depth  = 0.1; 
+      break;
+     
+    case 3 : //right of door
+      width  = 1;
+      height = 2;
+      depth  = 0.1; 
+      break;
+     
+    case 4 : //above door
+      width  = 1;
+      height = 1;
+      depth  = 0.1; 
+      break;
+  
+  default : //otherwise I don't know what to do with it and no texture should be drawn.
+    width  = 1;
+    height = 1;
+    depth  = 0.1; 
+  }
+  
+  
+  textcoordsArray[0][0]=zero;   textcoordsArray[0][1]=zero;   //bottom left 
+  textcoordsArray[1][0]=zero;   textcoordsArray[1][1]=height; // top left
+  textcoordsArray[2][0]=width;  textcoordsArray[2][1]=height; // top right
+  textcoordsArray[3][0]=width;  textcoordsArray[3][1]=zero;   // bottom right
+  textcoordsArray[4][0]=-depth + width;     textcoordsArray[4][1]=zero;   // back bottom right
+  textcoordsArray[5][0]=-depth + width;     textcoordsArray[5][1]=height;      // back top right
+  textcoordsArray[6][0]=-depth; textcoordsArray[6][1]=height; // back top left
+  textcoordsArray[7][0]=-depth; textcoordsArray[7][1]=zero;   // back bottom left
+  
+  if(whichTexture == 2){ // then this is a door.
+    textcoordsArray[0][0]=0; textcoordsArray[0][1]=0; //bottom left 
+    textcoordsArray[1][0]=0; textcoordsArray[1][1]=1; // top left
+    textcoordsArray[2][0]=1; textcoordsArray[2][1]=1; // top right
+    textcoordsArray[3][0]=1; textcoordsArray[3][1]=0; // bottom right
+    textcoordsArray[4][0]=-4; textcoordsArray[4][1]=0; // back bottom right
+    textcoordsArray[5][0]=-4; textcoordsArray[5][1]=3; // back top right
+    textcoordsArray[6][0]=-5; textcoordsArray[6][1]=3; // back top left
+    textcoordsArray[7][0]=-5; textcoordsArray[7][1]=0; // back bottom left
+
+  }
+
+  glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+  glBufferData(GL_ARRAY_BUFFER, 8*sizeof(vec2), textcoordsArray, GL_DYNAMIC_DRAW);
+	  
+  
+
+  glVertexAttribPointer(pvaLoc_texCoords, 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(pvaLoc_texCoords);
+
 
 }
 
