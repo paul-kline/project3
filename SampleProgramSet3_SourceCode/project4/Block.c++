@@ -137,7 +137,7 @@ void Block::defineBlock()
 	glGenVertexArrays(1, vao);
 	glBindVertexArray(vao[0]);
 
-	glGenBuffers(1, vbo);
+	glGenBuffers(2, vbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 	glBufferData(GL_ARRAY_BUFFER, 8*sizeof(vec3), coords, GL_DYNAMIC_DRAW);
@@ -145,6 +145,40 @@ void Block::defineBlock()
 	glVertexAttribPointer(pvaLoc_mcPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(pvaLoc_mcPosition);
 	glDisableVertexAttribArray(pvaLoc_mcNormal);
+		
+	
+	typedef float vec2[2];
+	vec2* textcoordsArray = new vec2[8];
+	textcoordsArray[0][0]=0; textcoordsArray[0][1]=0; //bottom left 
+	textcoordsArray[1][0]=0; textcoordsArray[1][1]=3; // top left
+	textcoordsArray[2][0]=1; textcoordsArray[2][1]=3; // top right
+	textcoordsArray[3][0]=1; textcoordsArray[3][1]=0; // bottom right
+	textcoordsArray[4][0]=-4; textcoordsArray[4][1]=0; // back bottom right
+	textcoordsArray[5][0]=-4; textcoordsArray[5][1]=3; // back top right
+	textcoordsArray[6][0]=-5; textcoordsArray[6][1]=3; // back top left
+	textcoordsArray[7][0]=-5; textcoordsArray[7][1]=0; // back bottom left
+	
+	if(whichTexture == 2){ // then this is a door.
+	  textcoordsArray[0][0]=0; textcoordsArray[0][1]=0; //bottom left 
+	textcoordsArray[1][0]=0; textcoordsArray[1][1]=1; // top left
+	textcoordsArray[2][0]=1; textcoordsArray[2][1]=1; // top right
+	textcoordsArray[3][0]=1; textcoordsArray[3][1]=0; // bottom right
+	textcoordsArray[4][0]=-4; textcoordsArray[4][1]=0; // back bottom right
+	textcoordsArray[5][0]=-4; textcoordsArray[5][1]=3; // back top right
+	textcoordsArray[6][0]=-5; textcoordsArray[6][1]=3; // back top left
+	textcoordsArray[7][0]=-5; textcoordsArray[7][1]=0; // back bottom left
+	  
+	  
+	  
+	}
+	
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, 8*sizeof(vec2), textcoordsArray, GL_DYNAMIC_DRAW);
+		
+	
+
+	glVertexAttribPointer(pvaLoc_texCoords, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(pvaLoc_texCoords);
   
 }
 
@@ -156,25 +190,25 @@ void Block::assignCoords()
   tempP = frontLeftBottomCorner + height*mainNormal;
   //vec3 t1;
   //t1[0]= (float)tempP.x; t1[1]=(float)tempP.y; t1[2]=(float)tempP.z;
-  coords[1][0]=(float)tempP.x; coords[1][1]=(float)tempP.y; coords[1][2]=(float)tempP.z;
+  coords[1][0]=(float)tempP.x; coords[1][1]=(float)tempP.y; coords[1][2]=(float)tempP.z; //top left
  // coords[1]=t1;
   
-  tempP = tempP + width * widthVector;
+  tempP = tempP + width * widthVector; // top right
   coords[2][0] = (float)tempP.x; coords[2][1]=(float)tempP.y; coords[2][2]=(float)tempP.z;
   
-  tempP = tempP + (-mainNormal) * height;
+  tempP = tempP + (-mainNormal) * height; // bottom right
   coords[3][0] = (float)tempP.x; coords[3][1]=(float)tempP.y; coords[3][2]=(float)tempP.z;
   
-  tempP = tempP + length * lengthVector;
+  tempP = tempP + length * lengthVector; // back bottom right
   coords[4][0] = (float)tempP.x; coords[4][1]=(float)tempP.y; coords[4][2]=(float)tempP.z;
   
-  tempP = tempP + height * mainNormal;
+  tempP = tempP + height * mainNormal; //back top right
   coords[5][0] = (float)tempP.x; coords[5][1]=(float)tempP.y; coords[5][2]=(float)tempP.z;
   
-  tempP = tempP + (-widthVector)*width;
+  tempP = tempP + (-widthVector)*width; // back top left
   coords[6][0] = (float)tempP.x; coords[6][1]=(float)tempP.y; coords[6][2]=(float)tempP.z;
   
-  tempP = tempP + (-mainNormal)*height;
+  tempP = tempP + (-mainNormal)*height; // back bottom left
   coords[7][0] = (float)tempP.x; coords[7][1]=(float)tempP.y; coords[7][2]=(float)tempP.z;
   
   
@@ -321,6 +355,15 @@ void Block::render()
 	if(!lightingModelLocked){
 	  ModelViewWithLighting::letThereBeLight(color,color,color,40);//ModelViewWithLighting::letThereBeLight(goldka,goldkd,goldks,goldm); 
 	}
+	glBindTexture(GL_TEXTURE_2D, texID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	// Set the textureMap variable in fragment shader to use "texture unit 0".
+	glUniform1i(ppuLoc_textureMap, 0);
+	glUniform1i(ppuLoc_whichTexture, whichTexture);
+	
+	
          
 	if (displayCylFill2)
 	{

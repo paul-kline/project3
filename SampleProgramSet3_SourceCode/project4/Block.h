@@ -46,7 +46,7 @@ private:
 	GLuint texID;
 	
 	GLuint vao[1];
-	GLuint vbo[1];
+	GLuint vbo[2];
 
 	void defineBlock();
 	void renderBlock(float * color);

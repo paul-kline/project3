@@ -53,6 +53,10 @@ uniform vec3 ka = vec3( 0.50, 0.0, 0.0); //these should all be set.
 //uniform vec4 kd = vec4( 1.0, 0.5, 0.5, 1.0 );
 uniform vec3 ks = vec3( 1.0, 0.5, 0.5); 
 uniform float m=1.0;
+
+
+in vec2 texCoords;
+out vec2 texCoordsToFS;
 vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 {
 	// Simplistic lighting model:
@@ -140,4 +144,7 @@ void main ()
 	// apply the projection matrix to compute the projective space representation
 	// of the 3D logical device space coordinates of the input vertex:
 	gl_Position = ec_lds * p_ecPosition;
+	
+	
+	texCoordsToFS = texCoords;
 }
