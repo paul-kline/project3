@@ -1,18 +1,18 @@
 CPP = g++
-INC = -I../cryphutil -I../fontutil -I../glslutil -I../mvcutil
+INC = -I../cryphutil -I../fontutil -I../glslutil -I../mvcutil -I ../imageutil
 C_FLAGS = -fPIC -g -c -DGL_GLEXT_PROTOTYPES $(INC)
 
 LINK = g++ -fPIC -g
-LOCAL_UTIL_LIBRARIES = -L../lib -lcryph -lfont -lglsl -lmvc
+LOCAL_UTIL_LIBRARIES = -L../lib -lcryph -lfont -lglsl -lmvc -limage
 OGL_LIBRARIES = -lglfw -lGLU -lGL
 
-OBJS = project3.o Simpleshape.o getMatrices.o ModelViewWithLighting.o MyController.o Column.o Block.o Stairs.o HalfColumn.o FancyColumn.o SuperFancyColumn.o FirePit.o GrassBlade.o
+OBJS = project4.o Simpleshape.o getMatrices.o ModelViewWithLighting.o MyController.o Column.o Block.o Stairs.o HalfColumn.o FancyColumn.o SuperFancyColumn.o FirePit.o GrassBlade.o
 all:
 	$(MAKE) -C ../mvcutil
-	$(MAKE) project3
+	$(MAKE) project4
 
-project3: $(OBJS) ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/libmvc.so
-	$(LINK) -o project3 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
+project4: $(OBJS) ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/libmvc.so
+	$(LINK) -o project4 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
 
 ../lib/libcryph.so: ../cryphutil/AffVector.h ../cryphutil/AffVector.c++ ../cryphutil/AffPoint.h ../cryphutil/AffPoint.c++
 	(cd ../cryphutil; make)
@@ -25,9 +25,12 @@ project3: $(OBJS) ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/
 
 ../lib/libmvc.so: ../mvcutil/Controller.h ../mvcutil/Controller.c++ ../mvcutil/ModelView.h ../mvcutil/ModelView.c++
 	(cd ../mvcutil; make)
+	
+../lib/libimage.so: ../imageutil/ImageReader.h ../imageutil/ImageReader.c++ ../imageutil/BMPLoader.h ../imageutil/BMPLoader.c++
+	(cd ../imageutil; make)	
 
-project3.o: project3.c++
-	$(CPP) $(C_FLAGS) project3.c++
+project4.o: project4.c++
+	$(CPP) $(C_FLAGS) project4.c++
 getMatrices.o: getMatrices.c++
 	$(CPP) $(C_FLAGS) getMatrices.c++
 ModelViewWithLighting.o: ModelViewWithLighting.h ModelViewWithLighting.c++

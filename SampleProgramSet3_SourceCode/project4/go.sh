@@ -1,4 +1,4 @@
 #! /bin/bash
 
 make
-./project2
+./project4

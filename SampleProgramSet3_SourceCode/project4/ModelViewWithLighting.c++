@@ -17,9 +17,13 @@ int ModelViewWithLighting::numInstances = 0;
 GLuint ModelViewWithLighting::shaderProgram = 0;
 GLint ModelViewWithLighting::pvaLoc_mcPosition = -2;
 GLint ModelViewWithLighting::pvaLoc_mcNormal = -2;
+GLint ModelViewWithLighting::pvaLoc_texCoords= -2;
+
 GLint ModelViewWithLighting::ppuLoc_kd = -2;
 GLint ModelViewWithLighting::ppuLoc_mc_ec = -2;
 GLint ModelViewWithLighting::ppuLoc_ec_lds = -2;
+GLint ModelViewWithLighting::ppuLoc_textureMap= -2;
+GLint ModelViewWithLighting::ppuLoc_whichTexture= -2;
 
 GLint ModelViewWithLighting::uLoc_p_ecLightPos = -2;
 GLint ModelViewWithLighting::uLoc_lightStrength= -2;
@@ -121,9 +125,13 @@ void ModelViewWithLighting::fetchGLSLVariableLocations()
 	{
 		pvaLoc_mcPosition = pvAttribLocation(shaderProgram, "mcPosition");
 		pvaLoc_mcNormal = pvAttribLocation(shaderProgram, "mcNormal");
+		pvaLoc_texCoords = pvAttribLocation(shaderProgram, "texCoords");
 		ppuLoc_kd = ppUniformLocation(shaderProgram, "kd");
 		ppuLoc_mc_ec = ppUniformLocation(shaderProgram, "mc_ec");
 		ppuLoc_ec_lds = ppUniformLocation(shaderProgram, "ec_lds");
+		
+		ppuLoc_textureMap = ppUniformLocation(shaderProgram, "textureMap");
+		ppuLoc_whichTexture = ppUniformLocation(shaderProgram, "whichTexture");
 		
 	//	uProjection, uObliqueDirection; 
 /*	

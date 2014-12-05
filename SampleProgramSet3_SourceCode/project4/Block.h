@@ -10,11 +10,11 @@ class Block : public ModelViewWithLighting
 public:
 	typedef float vec3[3];
 	Block();
-	Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffVector toRightCorner_, vec3 color_); //smarter constructor.
-	Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_);
+	Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffVector toRightCorner_, vec3 color_, int whichTexture_); //smarter constructor.
+	Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_, int whichTexture_);
 	virtual ~Block();
 
-	
+	int whichTexture;
 	float myBounds[6];
 	float color[3];
 	float height;
@@ -42,6 +42,9 @@ private:
 
 	cryph::AffVector widthVector;
 	cryph::AffVector lengthVector;
+	
+	GLuint texID;
+	
 	GLuint vao[1];
 	GLuint vbo[1];
 
@@ -49,6 +52,7 @@ private:
 	void renderBlock(float * color);
 	void setBounds();
 	void assignCoords();
+	GLuint defineTexture();
 	double calculateMax(char axis);
 	double calculateMin(char axis);
 };

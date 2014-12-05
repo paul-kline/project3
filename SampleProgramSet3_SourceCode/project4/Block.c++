@@ -5,7 +5,7 @@
 #include <cmath>
 #include "GLFWController.h"
 
-
+#include "ImageReader.h"
 
 
 
@@ -43,11 +43,13 @@ frontLeftBottomCorner=cryph::AffPoint( 1,0,0);
 // setBounds();
 
 }
-Block::Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffVector toRightCorner_, vec3 color_){
+Block::Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffVector toRightCorner_, vec3 color_, int whichTexture_){
 
  height=height_;
  width=width_;
  length=length_;
+ 
+ whichTexture = whichTexture_;
  
  mainNormal=normal_;
  mainNormal.normalize(); //just in case someone hadn't..
@@ -71,14 +73,18 @@ Block::Block(float height_, float width_, float length_, cryph::AffVector normal
  
  defineBlock(); 
  setBounds();
+ 
+ texID = defineTexture();
   
 };
 
-Block::Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_){
+Block::Block(float height_, float width_, float length_, cryph::AffVector normal_,cryph::AffPoint frontLeftBottomCorner_,cryph::AffPoint frontRightBottomCorner_, vec3 color_, int whichTexture_){
 
  height=height_;
  width=width_;
  length=length_;
+ 
+ whichTexture = whichTexture_;
  
  mainNormal=normal_;
  mainNormal.normalize(); //just in case someone hadn't..
@@ -99,6 +105,8 @@ Block::Block(float height_, float width_, float length_, cryph::AffVector normal
  
  defineBlock(); 
  setBounds();
+ 
+ texID = defineTexture();
   
 };
 
@@ -342,6 +350,55 @@ cryph::AffVector Block::getTowardsBackUnitVec(){
   t.normalize();
   return cryph::AffVector(t.dx, t.dy,t.dz);//(*(new cryph::AffVector(t.dx, t.dy,t.dz)));
   
+}
+
+
+GLuint Block::defineTexture()
+{
+  
+  //return 0;
+  if(whichTexture == -1) return 0; //do nothing if no texture for this object.
+  
+  ImageReader* texImage;
+  const char* imageLoc;// = "./";
+  switch ( whichTexture ) {
+  case 1 : //building texture 
+   
+   imageLoc = "./BrickOldRounded0134_2_S.jpg";
+   texImage = ImageReader::create(imageLoc);
+    break;
+  case 2 : //door texture 
+   imageLoc = "./DoorsMetalOrnate0035_1_L.jpg";
+   texImage = ImageReader::create(imageLoc);
+    break;
+  default : //otherwise I don't know what to do with it and no texture should be drawn.
+    whichTexture = -1;
+    return 0;
+  
+  }
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  GLuint locID[1];
+  glGenTextures(1, locID);
+  glBindTexture(GL_TEXTURE_2D, locID[0]);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  
+  GLint level = 0; // mipmap level 0
+  int pw = texImage->getWidth();
+  int ph = texImage->getHeight();
+  GLint iFormat = texImage->getInternalFormat();
+  GLenum format = texImage->getFormat();
+  GLenum type = texImage->getType();
+  const GLint border = 0; // must be zero (only present for backwards compatibility)
+  const void* pixelData = texImage->getTexture();
+  glTexImage2D(GL_TEXTURE_2D, level, iFormat, pw, ph, border, format, type, pixelData);
+
+  delete texImage; // all relevant information has been copied to OpenGL
+
+  return locID[0];
+
 }
 
 

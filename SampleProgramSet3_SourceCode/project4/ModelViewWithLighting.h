@@ -54,9 +54,11 @@ protected:
 	static ShaderIF* shaderIF;
 	static int numInstances;
 	static GLuint shaderProgram;
-	static GLint pvaLoc_mcPosition, pvaLoc_mcNormal;
+	static GLint pvaLoc_mcPosition, pvaLoc_mcNormal,pvaLoc_texCoords;
 	static GLint ppuLoc_kd;
 	static GLint ppuLoc_mc_ec, ppuLoc_ec_lds;
+	
+	static GLint ppuLoc_whichTexture, ppuLoc_textureMap;
 
 	
 	static GLint uLoc_p_ecLightPos, uLoc_lightStrength, uLoc_actualNumLights,uLoc_globalAmbient;

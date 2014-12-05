@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
 	//begin real project stuff;
 	// base block ;
 	float groundColor[3] = {0.0, 0.392,0.0}; // dark green {1,1,1};//392
-	Block ground(1,200, 500, cryph::AffVector(0,1,0), cryph::AffPoint(-100,-1,100) ,cryph::AffPoint(100,-1,100), groundColor);
+	Block ground(1,200, 500, cryph::AffVector(0,1,0), cryph::AffPoint(-100,-1,100) ,cryph::AffPoint(100,-1,100), groundColor, -1);
 	c.addModel(&ground);
 	
 	cryph::AffPoint buildingFrontLeft(-50, 0,-80); // most important point to define!!
@@ -198,7 +198,7 @@ int main(int argc, char* argv[])
 	    v1*=buildingWidth;
 	    buildingFrontRight = buildingFrontLeft + v1;
 	}
-	Block building(buildingHeight,buildingWidth, buildingLength, buildingUpVector, buildingFrontLeft ,buildingFrontRight, buildingColor);
+	Block building(buildingHeight,buildingWidth, buildingLength, buildingUpVector, buildingFrontLeft ,buildingFrontRight, buildingColor,-1);
 	c.addModel(&building);
 	
 	cryph::AffPoint stairsBackCenter = (buildingFrontLeft + buildingFrontRight) /2;
@@ -270,7 +270,7 @@ int main(int argc, char* argv[])
 	float heightSoFar = buildingHeight+columnHeight;
 	
 	//building(buildingHeight,buildingWidth, buildingLength, buildingUpVector, buildingFrontLeft ,buildingFrontRight, buildingColor);
-	Block mainBuilding(heightSoFar, buildingWidth, buildingLength*8, buildingUpVector,(buildingFrontLeft+ towardsBuildingBack*buildingLength), buildingFrontRight-buildingFrontLeft, buildingColor);
+	Block mainBuilding(heightSoFar, buildingWidth, buildingLength*8, buildingUpVector,(buildingFrontLeft+ towardsBuildingBack*buildingLength), buildingFrontRight-buildingFrontLeft, buildingColor,1);
 	c.addModel(&mainBuilding);
 	
 	
@@ -280,19 +280,19 @@ int main(int argc, char* argv[])
 	float insertHeight = heightSoFar - buildingHeight;
 	float insertWidth = (insertLeftSideRightPoint-insertLeftSideLeftPoint).length();
 	float insertLength = buildingLength - columnWidth;
-	Block leftBlockInsert(insertHeight,insertWidth, insertLength, buildingUpVector, insertLeftSideLeftPoint,insertLeftSideRightPoint, buildingColor);
+	Block leftBlockInsert(insertHeight,insertWidth, insertLength, buildingUpVector, insertLeftSideLeftPoint,insertLeftSideRightPoint, buildingColor,1);
 	c.addModel(&leftBlockInsert);
 	
 	cryph::AffPoint insertRightSideRightPoint = insertLeftSideLeftPoint + buildingWidth*(-v);
 	cryph::AffPoint insertRigthSideLeftPoint = insertRightSideRightPoint + v*insertWidth;
-	Block rightBlockInsert(insertHeight,insertWidth, insertLength, buildingUpVector, insertRigthSideLeftPoint ,insertRightSideRightPoint, buildingColor);
+	Block rightBlockInsert(insertHeight,insertWidth, insertLength, buildingUpVector, insertRigthSideLeftPoint ,insertRightSideRightPoint, buildingColor,1);
 	c.addModel(&rightBlockInsert);
 	
 	float insertMiddleHeight = (1.0/4.0)*heightSoFar;
 	float insertMiddleWidth = buildingWidth - (2*insertWidth);
 	cryph::AffPoint middleInsertLeftSide = insertLeftSideRightPoint + (heightSoFar - (insertMiddleHeight+ buildingHeight))*buildingUpVector;
 	cryph::AffPoint middleInsertRightSide = insertRigthSideLeftPoint + (heightSoFar - (insertMiddleHeight+ buildingHeight))*buildingUpVector;
-	Block insertMiddleBlock(insertMiddleHeight,insertMiddleWidth, insertLength, buildingUpVector, middleInsertLeftSide ,middleInsertRightSide, buildingColor);
+	Block insertMiddleBlock(insertMiddleHeight,insertMiddleWidth, insertLength, buildingUpVector, middleInsertLeftSide ,middleInsertRightSide, buildingColor,1);
 	c.addModel(&insertMiddleBlock);
 	
 	
@@ -302,7 +302,7 @@ int main(int argc, char* argv[])
 	cryph::AffPoint doorLeftPoint = insertLeftSideRightPoint  + towardsBuildingBack*(insertLength*(4.0/5.0)); //move it forward just a little bit.
 	cryph::AffPoint doorRightPoint = insertRigthSideLeftPoint + towardsBuildingBack*(insertLength*(4.0/5.0)); // same as the prior
 	float black[3]={0,0,0};
-	Block doorWay(doorHeight,doorWidth, (1), buildingUpVector, doorLeftPoint ,doorRightPoint, black);
+	Block doorWay(doorHeight,doorWidth, (1), buildingUpVector, doorLeftPoint ,doorRightPoint, black,2);
 	c.addModel(&doorWay);
 	
 	//decorative backStairs
@@ -346,7 +346,7 @@ int main(int argc, char* argv[])
 	//flat roof
 	float roofHeight = mainBuilding.height * (1.0/13.0);
 	float roofLength = mainBuilding.length + building.length;
-	Block roof(roofHeight, buildingWidth,roofLength, buildingUpVector, building.frontLeftBottomCorner + (heightSoFar*buildingUpVector), building.frontRightBottomCorner + (heightSoFar*buildingUpVector), burlywood);
+	Block roof(roofHeight, buildingWidth,roofLength, buildingUpVector, building.frontLeftBottomCorner + (heightSoFar*buildingUpVector), building.frontRightBottomCorner + (heightSoFar*buildingUpVector), burlywood,-1);
 	c.addModel(&roof);
  	
 
