@@ -290,7 +290,8 @@ void Block::renderBlock(vec3 color){
 	 temp[2]=2;
 	 temp[3]=5;
 	 
-	  glDisableVertexAttribArray(pvaLoc_texCoords);
+	 //glDisableVertexAttribArray(pvaLoc_texCoords);
+	 glUniform1i(ppuLoc_whichTexture, -1); //no texture mapping to happen here. This indicates that no blending will occur in the frag shader.
 	 tempV = mainNormal;
 	 glVertexAttrib3f(pvaLoc_mcNormal, tempV.dx,tempV.dy,tempV.dz);
 	 glDrawElements(GL_TRIANGLE_FAN,4,GL_UNSIGNED_INT,  temp);
@@ -310,7 +311,8 @@ void Block::renderBlock(vec3 color){
 	 glDrawElements(GL_TRIANGLE_FAN,(NUM_AROUND_CIRCLE+1),GL_UNSIGNED_INT,  topCap);
 	 glE*/
 	 glEnableVertexAttribArray(pvaLoc_mcNormal); //be nice and turn it back on if someone else forgets.
-	 glEnableVertexAttribArray(pvaLoc_texCoords);
+	 //glEnableVertexAttribArray(pvaLoc_texCoords);
+	 glUniform1i(ppuLoc_whichTexture, whichTexture); //set the which Texture back to what it was.
 }
 
 

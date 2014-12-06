@@ -343,7 +343,7 @@ void Column::renderColumn(vec3 color){
 	//vec3 colColor = {1, 0.0, 0.0};
 // 	glUniform3fv(ppuLoc_kd, 1, color);
 	
-	
+	glUniform1i(ppuLoc_whichTexture, -1); //no texture in case this is left on. -- No blending!
 	
 	glBindVertexArray(vao[0]);
 	if(capped){

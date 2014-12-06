@@ -119,6 +119,7 @@ void SuperFancyColumn::render()
 //     lightingModelLocked = true;
 //   }
   //ModelViewWithLighting::letThereBeLight(goldka,goldkd,goldks,goldm); 
+ // glUniform1i(ppuLoc_whichTexture, -1); // no textures for SuperFancyColumn
   baseBlock->render();
   topBlock->render();
   lowerColumn->render();

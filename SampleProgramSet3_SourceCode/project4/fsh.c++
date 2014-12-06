@@ -10,6 +10,7 @@ in vec2 texCoordsToFS; // (s,t)
 vec4 blend(){
   vec4 texColor = texture(textureMap, texCoordsToFS);
   float percentOriginalColor = 0.5;
+  if(whichTexture == 2) percentOriginalColor = 0.2; //if we're painting the door, make it stronger. Otherwise it appears too dark.
   float percentTexture = 1 - percentOriginalColor;
   
   vec4 result;

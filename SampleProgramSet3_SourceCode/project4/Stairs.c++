@@ -209,6 +209,7 @@ double Stairs::calculateMin(int index){
 void Stairs::render()
 {
   
+  //glUniform1i(ppuLoc_whichTexture, -1); // no texture for stairs.
   for(int i =0; i< numStairs; i++){
    blocks[i].render(); 
   }
