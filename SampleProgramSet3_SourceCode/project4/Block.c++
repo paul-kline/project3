@@ -324,6 +324,7 @@ void Block::render()
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
 	glUseProgram(shaderProgram);
 
+	glUniform1f(ppuLoc_currentOpacity, 1.0);
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
 	float mat[16];

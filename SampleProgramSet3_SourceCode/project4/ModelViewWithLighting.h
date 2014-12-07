@@ -48,18 +48,23 @@ public:
 	//void getMCBoundingBox(double* xyzLimits) const;
 	
 	void render(){};
+	static GLint ppuLoc_sceneHasTranslucentObjects ,ppuLoc_drawingOpaqueObjects,ppuLoc_currentOpacity;
 	
+	static GLuint shaderProgram;// moved from protected
 protected:
 
 	static ShaderIF* shaderIF;
 	static int numInstances;
-	static GLuint shaderProgram;
+
 	static GLint pvaLoc_mcPosition, pvaLoc_mcNormal,pvaLoc_texCoords;
 	static GLint ppuLoc_kd;
 	static GLint ppuLoc_mc_ec, ppuLoc_ec_lds;
 	
 	static GLint ppuLoc_whichTexture, ppuLoc_textureMap;
 
+	//translucency
+	
+	
 	
 	static GLint uLoc_p_ecLightPos, uLoc_lightStrength, uLoc_actualNumLights,uLoc_globalAmbient;
 	static GLint uProjection, uObliqueDirection, uLoc_ka,uLoc_ks, uLoc_m; 

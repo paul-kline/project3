@@ -98,3 +98,66 @@ void MyController::handleSpecialKey(Controller::SpecialKey key, int x, int y, in
 {
     Controller::handleSpecialKey(key, x, y, mods);
 }
+
+
+// void MyController::handleDisplay()
+// {
+//     GLFWController::handleDisplay();
+// }
+void MyController::handleDisplay()
+{
+	glfwMakeContextCurrent(theWindow);
+	int width, height;
+	glfwGetFramebufferSize(theWindow, &width, &height);
+	glViewport(0, 0, width, height);
+
+	// clear the frame buffer
+	glClear(glClearFlags);
+
+	// draw the collection of models
+	int which = 0;
+	
+	
+	glDepthMask(GL_TRUE);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// draw opaque objects
+	glDisable(GL_BLEND);
+	//GLint ppuLoc_drawingOpaqueObjects = 1;
+	
+	
+	
+	
+	//std::cout << "ppuLoc_drawingOpaqueObjects: " << ModelViewWithLighting::ppuLoc_drawingOpaqueObjects << "\n\n";
+	GLint pgm;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
+	glUseProgram(ModelViewWithLighting::shaderProgram);
+	
+	glUniform1i(ModelViewWithLighting::ppuLoc_drawingOpaqueObjects, 1);
+	glUniform1i(ModelViewWithLighting::ppuLoc_sceneHasTranslucentObjects, 1);
+	drawAllObjects();
+
+	// draw translucent objects
+	glDepthMask(GL_FALSE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glUniform1i(ModelViewWithLighting::ppuLoc_drawingOpaqueObjects, 0);
+	glUniform1i(ModelViewWithLighting::ppuLoc_sceneHasTranslucentObjects, 1);
+	drawAllObjects();
+	
+	
+	glfwSwapBuffers(theWindow);
+	checkForErrors(std::cout, "GLFWController::handleDisplay");
+}
+
+void MyController::drawAllObjects()
+{
+  for (std::vector<ModelView*>::iterator it=models.begin() ; it<models.end() ; it++)
+		(*it)->render();
+
+	
+
+}
+
+

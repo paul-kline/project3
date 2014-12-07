@@ -362,7 +362,8 @@ int main(int argc, char* argv[])
 	float topRadius = bottomRadius/30;
 	cryph::AffPoint firstConeCenter = roof.frontLeftBottomCorner + (spacing/2)*(-v) + (spacing/2)*roof.getTowardsBackUnitVec() + roof.height*buildingUpVector;
 	
-	Column column = *(new Column( firstConeCenter, bottomRadius, firstConeCenter + buildingUpVector*coneHeight, topRadius, gold, true));
+	float opacity = 0.5;
+	Column column = *(new Column( firstConeCenter, bottomRadius, firstConeCenter + buildingUpVector*coneHeight, topRadius, gold, true, opacity));
 	c.addModel(&column);
 // 	cryph::AffPoint previousCenter = firstConeCenter - (mainBuilding.getTowardsBackUnitVec()*2*spacing);
 // 	cryph::AffPoint centerP=previousCenter;
@@ -388,7 +389,7 @@ int main(int argc, char* argv[])
 	  cryph::AffPoint bottomP = (*(new cryph::AffPoint(newx,newy,newz)));
 	  cryph::AffPoint topP = (*(new cryph::AffPoint(newxt,newyt,newzt)));
 	//  std::cout << "feifjeifjeifj: " << bottomP.x << ", " << bottomP.y << ", " << bottomP.z << "\n";
-	   Column* column = (new Column( bottomP, bottomRadius, topP, topRadius, gold, true));
+	   Column* column = (new Column( bottomP, bottomRadius, topP, topRadius, gold, true, opacity));
 //  	 Column column = *(new Column( *(new cryph::AffPoint(newx,newy,newz)), bottomRadius, *(new cryph::AffPoint(newxt,newyt,newzt)), topRadius, gold, true));
 	 c.addModel(column);
  
@@ -416,7 +417,7 @@ int main(int argc, char* argv[])
 	  cryph::AffPoint bottomP = (*(new cryph::AffPoint(newx,newy,newz)));
 	  cryph::AffPoint topP = (*(new cryph::AffPoint(newxt,newyt,newzt)));
 	//  std::cout << "feifjeifjeifj: " << bottomP.x << ", " << bottomP.y << ", " << bottomP.z << "\n";
-	   Column* column = (new Column( bottomP, bottomRadius, topP, topRadius, gold, true));
+	   Column* column = (new Column( bottomP, bottomRadius, topP, topRadius, gold, true,opacity));
 //  	 Column column = *(new Column( *(new cryph::AffPoint(newx,newy,newz)), bottomRadius, *(new cryph::AffPoint(newxt,newyt,newzt)), topRadius, gold, true));
 	 c.addModel(column);
 	  
@@ -459,7 +460,7 @@ int main(int argc, char* argv[])
 	  cryph::AffPoint bottomP = (*(new cryph::AffPoint(newx,newy,newz)));
 	  cryph::AffPoint topP = (*(new cryph::AffPoint(newxt,newyt,newzt)));
 //	  std::cout << "feifjeifjeifj: " << bottomP.x << ", " << bottomP.y << ", " << bottomP.z << "\n";
-	   Column* column = (new Column( bottomP, newbottomRadius, topP, newtopRadius, gold, true));
+	   Column* column = (new Column( bottomP, newbottomRadius, topP, newtopRadius, gold, true, opacity));
 //  	 Column column = *(new Column( *(new cryph::AffPoint(newx,newy,newz)), bottomRadius, *(new cryph::AffPoint(newxt,newyt,newzt)), topRadius, gold, true));
 	 c.addModel(column);
 	  
@@ -492,7 +493,7 @@ int main(int argc, char* argv[])
 	  cryph::AffPoint bottomP = (*(new cryph::AffPoint(newx,newy,newz)));
 	  cryph::AffPoint topP = (*(new cryph::AffPoint(newxt,newyt,newzt)));
 //	  std::cout << "feifjeifjeifj: " << bottomP.x << ", " << bottomP.y << ", " << bottomP.z << "\n";
-	   Column* column = (new Column( bottomP, newbottomRadius, topP, newtopRadius, gold, true));
+	   Column* column = (new Column( bottomP, newbottomRadius, topP, newtopRadius, gold, true, opacity));
 //  	 Column column = *(new Column( *(new cryph::AffPoint(newx,newy,newz)), bottomRadius, *(new cryph::AffPoint(newxt,newyt,newzt)), topRadius, gold, true));
 	 c.addModel(column);
 	  

@@ -7,6 +7,11 @@ uniform int whichTexture=-1;
 out vec4 fragmentColor;
 in vec2 texCoordsToFS; // (s,t)
 
+
+uniform int sceneHasTranslucentObjects = 0;
+uniform int drawingOpaqueObjects = 1;
+
+uniform float currentOpacity = 1.0;
 vec4 blend(){
   vec4 texColor = texture(textureMap, texCoordsToFS);
   float percentOriginalColor = 0.5;
@@ -34,13 +39,40 @@ vec4 blend(){
   
 }
 
-void main()
-{
+vec4 computeColorAsUsual(){
   
-	
-	fragmentColor = vec4(colorToFS, 1.0);	  
+	vec4 color;
+	color = vec4(colorToFS, currentOpacity);	  
 	if(whichTexture != -1){
-	 fragmentColor = blend();
+	 color = blend();
 	  
 	}
+	return color;
 }
+
+void main(){
+  //drawingOpaqueObjects = 1;
+    vec4 color = computeColorAsUsual();
+    //fragmentColor = color;
+    if (sceneHasTranslucentObjects == 1 && whichTexture == -1)
+    {
+        if (drawingOpaqueObjects == 1){
+            if (color.a < 1.0)
+                discard;
+            else
+                fragmentColor = color;
+	}else if (color.a < 1){
+            fragmentColor = color;
+	}else{
+            discard;
+	  //fragmentColor= color;
+	}
+    }else{
+        fragmentColor = color;
+    }
+   // if(whichTexture != -1) fragmentColor = color;
+
+  
+}
+
+

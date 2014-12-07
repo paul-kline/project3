@@ -10,6 +10,7 @@ class Column : public ModelViewWithLighting
 public:
 	Column();
 	Column(cryph::AffPoint bottom_,float bradius_, cryph::AffPoint top_, float tradius_, float color_[3], bool capped);
+	Column(cryph::AffPoint bottom_,float bradius_, cryph::AffPoint top_, float tradius_, float color_[3], bool capped, float opacity_);
 	virtual ~Column();
 
 	cryph::AffPoint bottom;
@@ -19,6 +20,9 @@ public:
 	float bradius;
 	float tradius;
 	static int instances;
+	
+	float opacity;
+	
 	
 	void handleCommand(unsigned char key, double ldsX, double ldsY);
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}

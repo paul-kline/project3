@@ -38,6 +38,10 @@ GLint ModelViewWithLighting::uLoc_ka = -2;
 GLint ModelViewWithLighting::uLoc_ks = -2;
 GLint ModelViewWithLighting::uLoc_m = -2;
 
+GLint ModelViewWithLighting::ppuLoc_sceneHasTranslucentObjects = -2;
+GLint ModelViewWithLighting::ppuLoc_drawingOpaqueObjects = -2;
+GLint ModelViewWithLighting::ppuLoc_currentOpacity = -2;
+
 std::string ModelViewWithLighting::vShaderSource = "vsh.c++";
 std::string ModelViewWithLighting::fShaderSource = "fsh.c++";
 
@@ -133,6 +137,9 @@ void ModelViewWithLighting::fetchGLSLVariableLocations()
 		ppuLoc_textureMap = ppUniformLocation(shaderProgram, "textureMap");
 		ppuLoc_whichTexture = ppUniformLocation(shaderProgram, "whichTexture");
 		
+		ppuLoc_sceneHasTranslucentObjects = ppUniformLocation(shaderProgram, "sceneHasTranslucentObjects");
+		ppuLoc_drawingOpaqueObjects = ppUniformLocation(shaderProgram, "drawingOpaqueObjects");
+		ppuLoc_currentOpacity = ppUniformLocation(shaderProgram, "currentOpacity");
 	//	uProjection, uObliqueDirection; 
 /*	
 uniform int currentProjection=2; //alphabetical: 0=OBLIQUE, 1=ORTHOGONAL, 2=PERSPECTIVE

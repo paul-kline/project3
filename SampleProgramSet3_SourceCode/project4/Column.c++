@@ -44,6 +44,35 @@ Column::Column(cryph::AffPoint bottom_, float bradius_, cryph::AffPoint top_, fl
   
  displayCylEdges = false;
  displayCylFill=true;
+ 
+ opacity = 1.0; // if this constructor is used, default to NOT see through.
+  
+};
+
+Column::Column(cryph::AffPoint bottom_, float bradius_, cryph::AffPoint top_, float tradius_, float color_[3], bool capped_, float opacity_){
+  Column::instances++;
+  
+  Ihandle = (Column::instances ==1)? true : false; //take care of the handling.
+  
+ capped = capped_;
+ bottom = bottom_;
+ top=top_;
+ bradius =bradius_ ;
+ tradius= tradius_;
+ color[0] = color_[0];
+ color[1] = color_[1];
+ color[2] = color_[2];
+ direction = (top-bottom);
+ direction.normalize();
+ 
+ defineColumn();
+ initializeCappingIndices();
+ setBounds();
+  
+ displayCylEdges = false;
+ displayCylFill=true;
+ 
+ opacity=opacity_;
   
 };
 
@@ -371,6 +400,8 @@ void Column::render()
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
 	glUseProgram(shaderProgram);
 
+	
+	glUniform1f(ppuLoc_currentOpacity, opacity);
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
 	
@@ -395,7 +426,7 @@ void Column::render()
 		renderColumn(black);
 	}
 	
-	
+	glUniform1f(ppuLoc_currentOpacity, 1.0); //put opacity back to completely opaque.
 	
 	
 	

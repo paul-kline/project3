@@ -57,6 +57,8 @@ uniform float m=1.0;
 
 in vec2 texCoords;
 out vec2 texCoordsToFS;
+
+
 vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 {
 	// Simplistic lighting model:

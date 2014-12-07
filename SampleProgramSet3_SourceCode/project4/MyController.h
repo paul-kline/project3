@@ -22,6 +22,8 @@ public:
 	void handleFunctionKey(int whichFunctionKey, int x, int y, int mods);
 	void handleSpecialKey(SpecialKey key, int x, int y, int mods);
 	
+	void handleDisplay();
+	
 protected:
 	
 
@@ -30,7 +32,7 @@ private:
 	static int clickedy;
 	static bool leftclick_down;
 	
-	
+	void drawAllObjects();
 };
 
 #endif
