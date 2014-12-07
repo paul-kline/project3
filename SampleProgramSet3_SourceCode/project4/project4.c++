@@ -542,6 +542,33 @@ int main(int argc, char* argv[])
  	makeGrassField(&ground, &c, &mainBuilding, &(firepit.baseBlock),&(firepit2.baseBlock),&stairs);
 	
 	
+	//decorative stair roof
+	cryph::AffPoint frontLeftDecStairRoof = roof.frontLeftBottomCorner + roof.mainNormal*roof.height;
+	//now frontLeftDecStairRoof is in the corner, but at least on the top. Now I need to move in the size of the cones.
+	float inDistance = fmax(spacing,newSpacing);
+	inDistance =inDistance + 0.5*inDistance; //give ourselves some buffer.
+	cryph::AffVector toright = roof.frontRightBottomCorner - roof.frontLeftBottomCorner;
+	toright.normalize();
+	cryph::AffVector d = roof.getTowardsBackUnitVec() + toright;
+	d.normalize();
+	d = d*inDistance;
+	frontLeftDecStairRoof= frontLeftDecStairRoof + d;
+	//now frontLeftDecStairRoof should be in the right spot.
+	
+	float moveOverD;
+	moveOverD = roof.getWidth()- inDistance*1.5; // this is wrong I think.
+	float stepH,stairW,stairL;
+	stairL = roof.length - inDistance*1.5;
+	int stairNumber = 13;
+	//float white[3] = {1,1,1};
+	
+	Stairs roofstairs(eachStepHeight/2, moveOverD, stairL, buildingUpVector, frontLeftDecStairRoof ,frontLeftDecStairRoof + toright*moveOverD, goldRod, 
+		      eachStepHeight, stairNumber, false);
+	c.addModel(&roofstairs);
+	
+	
+	
+	
 	
 	glClearColor(0.0, 0.0, 0.0, 0.50);
 	 double xyz[6];
